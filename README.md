@@ -1,15 +1,15 @@
 English | [中文](README_ZH.md)
 
-# InkSight | inco (墨鱼)
+# InkSight | 墨见
 
-> An LLM-powered smart e-ink desktop companion that delivers calm, meaningful "slow information" — your personal ink-on-paper intelligence.
+> An LLM-powered smart e-ink desktop companion that delivers calm, meaningful "slow information" — your personal ink-on-paper intelligence. A minimalist smart e-ink desktop companion that generates warm, thoughtful content through LLM — your multi-scenario AI companion on the desk.
 
 Official Website: [https://www.inksight.site](https://www.inksight.site)
 
 ![Version](https://img.shields.io/badge/version-v0.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-ESP32--C3-orange)
-![Python](https://img.shields.io/badge/python-3.10+-blue)
+![Python](https://img.shields.io/badge/python-3.9+-blue)
 
 ![inco](images/intro.jpg)
 
@@ -17,54 +17,55 @@ Official Website: [https://www.inksight.site](https://www.inksight.site)
 
 ## Overview
 
-**inco** (墨鱼) is a smart e-ink desktop companion built around InkSight. It uses a backend LLM to generate personalized content based on real-time context — weather, time of day, date, and solar terms — and renders it on a 4.2-inch e-ink screen. It ships with 10 core content modes for everyday use and 22 built-in modes in total, bringing a thoughtful, intelligent companion to your desk.
+**inco** (墨见) is a minimalist smart e-ink desktop companion that generates warm, thoughtful "slow information" through LLM. It uses a backend LLM to generate personalized content based on real-time context — weather, time of day, date, and solar terms — and renders it on a 4.2-inch e-ink screen. With dozens of content modes ranging from daily recommendations to AI briefings, it brings a thoughtful, intelligent companion to your desk.
 
 The backend is built on the OpenAI-compatible SDK, so it works out of the box with **DeepSeek**, **Alibaba Bailian (Qwen)**, and **Moonshot (Kimi)**. Any OpenAI-compatible API provider (OpenAI, Groq, Together AI, etc.) can be used with minimal configuration. Modes are extensible via a JSON config-driven system — create your own content modes without writing Python.
 
 **Key Features:**
 
-- **10 Core Modes + 22 Built-in Modes Total** — Core: Daily, Weather, Zen, Briefing, Stoic, Poetry, ArtWall, Almanac, Recipe, Countdown; plus utility and extended modes, and custom JSON modes
+- **6 Core Modes + 16 Extended Modes + Custom Modes** — Core: Daily, Weather, Poetry, ArtWall, Almanac, Briefing; Extended: Stoic, Zen, Recipe, Countdown, Memo, Habit, Letter, ThisDay, Riddle, Question, Bias, Story, LifeBar, Challenge, Roast, Fitness; plus custom JSON modes
 - **Extensible Mode System** — Define new modes via JSON config (prompt, layout, style) without writing code
+- **AI Mode Generator** — Generate custom modes from natural language descriptions using LLM — "more content, defined by you"
 - **Built-in Mode Editor** — Create/edit custom JSON modes with templates and preview in web config
 - **4 Refresh Strategies** — Random, Sequential, Time-Bound, Smart
 - **On-Demand Refresh** — Single press for instant refresh, double press to switch mode, or trigger remotely via web
+- **User Authentication** — User registration, login, and device binding system
+- **Device Token Security** — Token-based authentication for device API access
+- **Habit Tracker** — Daily habit tracking with check-in and status monitoring
+- **Favorites System** — Save and revisit favorite content and modes
+- **Content History** — Browse historical rendered content with pagination
+- **Share & QR Codes** — Share device content and generate QR codes for easy access
+- **Widget Endpoint** — Embed InkSight content as widgets in external pages
 - **Statistics Dashboard** — Device status monitoring, battery voltage trends, mode usage stats, cache hit rate
 - **WiFi Provisioning** — Captive Portal auto-popup for zero-friction setup
 - **Web Configuration** — Full settings management with import/export, live preview, and config history
 - **Smart Caching** — Batch pre-generated content with sub-second response times
-- **Multi-LLM Support** — DeepSeek, Alibaba Bailian, Moonshot, and any OpenAI-compatible API
-- **Ultra-Low Power** — Deep Sleep mode, 3-6 months battery life on a single charge
+- **Multi-LLM Support** — DeepSeek, Alibaba Bailian (Qwen), Moonshot (Kimi), and any OpenAI-compatible API
+- **Ultra-Low Power** — Deep Sleep mode, 6 months battery life on a single charge with LiFePO4 battery
+- **Affordable Hardware** — Total BOM cost under ¥200, open-source hardware that everyone can build
 
 ---
 
 ## Content Modes
 
-![Content Modes](images/modes.jpg)
+![Content Modes](images/mode.png)
+
+### Core Modes (6)
 
 | Mode | Description |
 |------|-------------|
-| **STOIC** — Stoic Philosophy | Solemn, introspective philosophical quotes, perfect for weekday mornings |
-| **ROAST** — Witty Roast | Sharp, humorous roasts that use dark humor to relieve stress |
-| **ZEN** — Zen | Minimalist characters (e.g. "静" / stillness, "空" / emptiness), creating a tranquil atmosphere |
 | **DAILY** — Daily Picks | Rich layout with quotes, book recommendations, fun facts, and seasonal info |
-| **BRIEFING** — AI Briefing | Hacker News Top 3 + Product Hunt #1, with AI industry insights |
-| **ARTWALL** — AI Gallery | Black-and-white woodcut-style artwork generated from weather and seasonal context |
-| **RECIPE** — Daily Recipe | Seasonal ingredient-based meal plans for breakfast, lunch, and dinner |
-| **FITNESS** — Fitness Plan | Simple home workout routines with exercise lists and health tips |
-| **POETRY** — Daily Poetry | Curated classical Chinese poetry, celebrating the beauty of language |
-| **COUNTDOWN** — Countdown | Countdown / count-up timers for important dates and anniversaries |
 | **WEATHER** — Weather Dashboard | Real-time weather snapshot with practical day planning hints |
-| **MEMO** — Memo | Display your custom short note on the e-ink screen |
-| **HABIT** — Habit Tracker | Track daily habits and completion progress at a glance |
+| **POETRY** — Daily Poetry | Curated classical Chinese poetry, celebrating the beauty of language |
+| **ARTWALL** — AI Gallery | Black-and-white woodcut-style artwork generated from weather and seasonal context |
 | **ALMANAC** — Chinese Almanac | Lunar calendar dates, auspicious/inauspicious activities, solar terms, health tips |
-| **LETTER** — Slow Letter | A short letter from someone across time and space — warm, literary, with character |
-| **THISDAY** — This Day in History | A major historical event that happened on this date |
-| **RIDDLE** — Daily Riddle | Riddles, brain teasers, and fun trivia questions |
-| **QUESTION** — Daily Question | A thought-provoking open-ended question worth 3 minutes of reflection |
-| **BIAS** — Cognitive Bias | Learn one cognitive bias or psychological effect each day |
-| **STORY** — Micro Story | A complete three-act flash fiction piece with a twist ending |
-| **LIFEBAR** — Life Progress Bar | Visual progress bars for year / month / week / lifetime |
-| **CHALLENGE** — Micro Challenge | A 5-minute daily challenge for novelty and small wins |
+| **BRIEFING** — AI Briefing | Hacker News Top 3 + Product Hunt #1, with AI industry insights |
+
+### Custom Modes
+
+Create your own content modes in two ways:
+- **Manual Creation**: Define custom modes via JSON config (prompt, layout, style) using the built-in mode editor
+- **AI Generation**: Generate mode definitions from natural language descriptions using LLM
 
 ---
 
@@ -77,17 +78,6 @@ The backend is built on the OpenAI-compatible SDK, so it works out of the box wi
 | **Time-Bound** | Display different modes based on time of day (e.g. Recipe in the morning, Briefing mid-day, Zen at night) |
 | **Smart** | Automatically match the best mode to the current time slot |
 
-### Smart Mode Default Schedule
-
-| Time Slot | Recommended Modes |
-|-----------|-------------------|
-| 06:00 - 09:00 | Recipe, Daily |
-| 09:00 - 12:00 | Briefing, Stoic |
-| 12:00 - 14:00 | Zen, Poetry |
-| 14:00 - 18:00 | Stoic, Roast |
-| 18:00 - 21:00 | Fitness, Recipe |
-| 21:00 - 06:00 | Zen, Poetry |
-
 ---
 
 ## Architecture
@@ -96,10 +86,11 @@ The backend is built on the OpenAI-compatible SDK, so it works out of the box wi
 
 | Layer | Tech Stack |
 |-------|------------|
-| Hardware | ESP32-C3 + 4.2" E-Paper (400x300, 1-bit) + LiFePO4 battery |
+| Hardware | ESP32-C3 (RISC-V, WiFi, ultra-low power) + 4.2" E-Paper (400x300, 1-bit, paper-like texture, non-glowing) + LiFePO4 battery |
 | Firmware | PlatformIO / Arduino, GxEPD2, WiFiManager |
-| Backend | Python FastAPI, Pillow, OpenAI SDK, httpx, SQLite |
-| Frontend | Static HTML pages (`webconfig/`) + Next.js web app (`webapp/`, website + flasher) |
+| Backend | Python 3.9+ FastAPI, Pillow, OpenAI SDK, httpx, SQLite, PyJWT, qrcode, dashscope |
+| Frontend | Static HTML pages (`webconfig/`) + Next.js 16.1.6 web app (`webapp/`, website + flasher) |
+| Authentication | JWT-based user sessions + Device Token authentication |
 
 For detailed architecture design, see the [Architecture Documentation](docs/architecture.md) (Chinese).
 
@@ -109,9 +100,9 @@ For detailed architecture design, see the [Architecture Documentation](docs/arch
 
 ### 1. Hardware
 
-- ESP32-C3 dev board (SuperMini recommended)
-- 4.2" e-ink display (SPI, 400x300)
-- LiFePO4 battery + TP5000 charge module (optional)
+- ESP32-C3 dev board (SuperMini recommended) — RISC-V architecture, WiFi connectivity, ultra-low power
+- 4.2" e-ink display (SPI, 400x300) — Paper-like texture, non-glowing, eye-friendly
+- LiFePO4 battery + TP5000 charge module (optional) — 6 months battery life with Deep Sleep mode
 
 See the [Hardware Guide](docs/hardware.md) (Chinese) for wiring details.
 
@@ -147,14 +138,22 @@ Once running, visit:
 | Preview Console | `http://localhost:8080` | Test rendering for each mode |
 | Config Manager | `http://localhost:8080/config` | Manage device configuration |
 | Stats Dashboard | `http://localhost:8080/dashboard` | Device status and usage statistics |
+| Mode Editor | `http://localhost:8080/editor` | Create and edit custom JSON modes |
 
 ### 2.5 Web App (website + flasher)
 
 ```bash
 cd webapp
+
+# Configure environment variables
+cp .env.example .env
+
 npm install
+
 npm run dev
 ```
+
+Install Node.js in advance
 
 Default URL: `http://localhost:3000`
 
@@ -195,8 +194,8 @@ Next.js API routes to proxy `/api/firmware/*` requests to
 
 ### 4. WiFi Provisioning
 
-1. On first boot (or hold BOOT button for 2 seconds) to enter provisioning mode
-2. Connect your phone to the `InkSight-XXXXXX` hotspot
+1. Long press BOOT (>= 5s) to enter provisioning mode
+2. Connect your phone to the `InkSight-XXXX` hotspot
 3. A configuration page will pop up automatically — select your WiFi and enter the password
 4. The device will connect and start working once configuration is complete
 
@@ -204,9 +203,10 @@ Next.js API routes to proxy `/api/firmware/*` requests to
 
 | Action | Effect |
 |--------|--------|
-| Short press BOOT (< 2s) | Refresh current content immediately |
-| Double press BOOT (< 500ms interval) | Switch to next mode and refresh |
-| Long press BOOT (>= 2s) | Reboot and enter provisioning mode |
+| RESET | Reset, a hardware-level reset, a complete reboot, the behavior of which is a page refresh |
+| Short press BOOT (< 2s) | Switch to next mode，LIVE/INTERVAL |
+| Long press BOOT (>= 2s) | restarting |
+| Long press BOOT (while restarting) | Enter AP configuration network mode |
 
 ---
 
@@ -237,6 +237,18 @@ Visit `http://your-server:8080/config?mac=XX:XX:XX:XX:XX:XX` to configure your d
 - **Live Preview** — Preview rendering for each mode before saving
 - **Remote Refresh** — Trigger the device to refresh content on next wake-up
 - **Config History** — View and rollback to previous config versions
+- **Custom Mode Editor** — Create and edit custom JSON modes with visual editor
+- **AI Mode Generator** — Generate mode definitions from natural language descriptions
+
+### Additional Features
+
+- **Habit Tracker** — Track daily habits with check-in functionality (accessible via HABIT mode)
+- **Favorites** — Save favorite content and modes for quick access
+- **Content History** — Browse historical rendered content with filtering
+- **Share & QR Codes** — Share device content and generate QR codes for easy access
+- **Widget Embedding** — Embed InkSight content as widgets in external pages
+- **Device Authentication** — Secure device API access with token-based authentication
+- **User Accounts** — Register, login, and bind multiple devices to your account
 
 See the [API Documentation](docs/api.md) (Chinese) for full endpoint details.
 
@@ -259,20 +271,97 @@ Visit `http://your-server:8080/dashboard?mac=XX:XX:XX:XX:XX:XX` to view device s
 
 ## API Endpoints
 
+### Core Endpoints
+
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/health` | Health check |
 | GET | `/api/render` | Generate BMP image (called by device) |
 | GET | `/api/preview` | Generate PNG preview |
+| GET | `/api/widget/{mac}` | Widget endpoint for embedding content (read-only) |
+
+### Configuration Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
 | POST | `/api/config` | Save device configuration |
 | GET | `/api/config/{mac}` | Get current configuration |
 | GET | `/api/config/{mac}/history` | Get configuration history |
-| PUT | `/api/config/{mac}/activate/{id}` | Activate a specific configuration |
+| PUT | `/api/config/{mac}/activate/{config_id}` | Activate a specific configuration |
+
+### Mode Management Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/modes` | List all available modes (builtin + custom) |
+| POST | `/api/modes/custom/preview` | Preview custom mode definition |
+| POST | `/api/modes/custom` | Create/update custom JSON mode |
+| GET | `/api/modes/custom/{mode_id}` | Get custom mode definition |
+| DELETE | `/api/modes/custom/{mode_id}` | Delete custom mode |
+| POST | `/api/modes/generate` | Generate mode definition from natural language (AI) |
+
+### Device Control Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
 | POST | `/api/device/{mac}/refresh` | Trigger immediate device refresh |
 | GET | `/api/device/{mac}/state` | Get device runtime state |
-| GET | `/api/stats/overview` | Global statistics overview |
+| POST | `/api/device/{mac}/runtime` | Set device runtime mode (active/interval) |
+| POST | `/api/device/{mac}/apply-preview` | Queue preview image to device |
+| POST | `/api/device/{mac}/switch` | Switch to a specific mode |
+| POST | `/api/device/{mac}/favorite` | Favorite current content or mode |
+| GET | `/api/device/{mac}/favorites` | Get favorites list |
+| GET | `/api/device/{mac}/history` | Get content history (paginated) |
+| POST | `/api/device/{mac}/token` | Generate device authentication token |
+| GET | `/api/device/{mac}/qr` | Generate QR code for device access |
+| GET | `/api/device/{mac}/share` | Get shareable content |
+| GET | `/api/devices/recent` | Get recently used devices |
+
+### Habit Tracker Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/device/{mac}/habit/check` | Record habit check-in |
+| GET | `/api/device/{mac}/habit/status` | Get habit status for current week |
+| DELETE | `/api/device/{mac}/habit/{habit_name}` | Delete habit and all records |
+
+### Statistics Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/stats/overview` | Global statistics overview (admin) |
 | GET | `/api/stats/{mac}` | Device statistics detail |
 | GET | `/api/stats/{mac}/renders` | Render history (paginated) |
+
+### Firmware Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/firmware/releases` | Get firmware release list |
+| GET | `/api/firmware/releases/latest` | Get latest firmware version |
+| GET | `/api/firmware/validate-url` | Validate firmware download URL |
+
+### Authentication Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/auth/register` | User registration |
+| POST | `/api/auth/login` | User login |
+| POST | `/api/auth/logout` | User logout |
+| GET | `/api/auth/me` | Get current user info |
+
+### User Device Management
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/user/devices` | List user's bound devices |
+| POST | `/api/user/devices` | Bind device to user |
+| DELETE | `/api/user/devices/{mac}` | Unbind device from user |
+
+**Note:** 
+- Device endpoints require `X-Device-Token` header for authentication
+- Admin endpoints require `Authorization: Bearer <token>` header
+- Widget endpoint (`/api/widget/{mac}`) is read-only and does not update device state or trigger refreshes
 
 ---
 
@@ -293,9 +382,13 @@ inksight/
 │   │   ├── renderer.py     # Builtin mode image rendering
 │   │   ├── json_renderer.py# JSON mode image rendering
 │   │   ├── mode_registry.py# Mode registration (builtin + JSON)
+│   │   ├── mode_generator.py # AI mode definition generator
 │   │   ├── cache.py        # Caching system
 │   │   ├── schemas.py      # Pydantic request validation
-│   │   ├── patterns/       # Builtin Python mode implementations
+│   │   ├── auth.py         # Authentication (JWT + device tokens)
+│   │   ├── crypto.py       # Cryptographic utilities
+│   │   ├── db.py           # Database connection management
+│   │   ├── errors.py       # Error handling
 │   │   └── modes/          # JSON mode definitions
 │   │       ├── schema/     # JSON Schema for mode validation
 │   │       ├── builtin/    # 22 built-in JSON modes
@@ -321,9 +414,10 @@ inksight/
 │   ├── config.html         # Configuration manager
 │   ├── preview.html        # Preview console
 │   └── dashboard.html      # Statistics dashboard
-├── webapp/                 # Next.js website + Web Flasher frontend
+├── webapp/                 # Next.js 16.1.6 website + Web Flasher frontend
 │   ├── app/                # App Router pages and API routes
 │   ├── components/         # UI components
+│   ├── lib/                # Utility libraries
 │   ├── public/             # Static assets
 │   └── package.json        # Node.js dependencies and scripts
 └── docs/                   # Documentation
@@ -350,6 +444,16 @@ inksight/
 - [x] Statistics dashboard (device monitoring + usage stats + chart visualization)
 - [x] RSSI signal strength reporting
 - [x] Extensible mode system (JSON config-driven custom modes)
+- [x] User authentication system (registration, login, device binding)
+- [x] Device token authentication for secure API access
+- [x] Custom mode management (create, preview, delete)
+- [x] AI mode generator (natural language to mode definition)
+- [x] Habit tracker with check-in and status monitoring
+- [x] Favorites system for content and modes
+- [x] Content history with pagination
+- [x] Share functionality and QR code generation
+- [x] Widget endpoint for embedding content
+- [x] Mode editor web page
 - [ ] Multi-resolution display support (backend rendering adaptation)
 - [ ] User-provided API keys
 - [ ] One-click Vercel deployment
