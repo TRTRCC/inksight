@@ -5,6 +5,7 @@ export const theme = {
     surface: '#F0F0F0',
     border: '#CCCCCC',
     ink: '#000000',
+    brandInk: '#000000',
     secondary: '#555555',
     tertiary: '#888888',
     accent: '#000000',
