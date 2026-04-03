@@ -1,0 +1,151 @@
+name: Sync Upstream Releases
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 每6小时检查一次
+  workflow_dispatch:  # 手动触发
+
+permissions:
+  contents: write
+
+env:
+  UPSTREAM_REPO: datascale-ai/inksight
+  CURRENT_REPO: TRTRCC/inksight
+
+jobs:
+  sync-releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch upstream releases
+        id: fetch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "📥 Fetching releases from $UPSTREAM_REPO..."
+          
+          # 获取上游所有 releases
+          curl -s \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/$UPSTREAM_REPO/releases?per_page=100" \
+            > upstream_releases.json
+          
+          # 提取 tag 名称
+          tags=$(jq -r '.[].tag_name' upstream_releases.json)
+          echo "Found releases: $tags"
+          echo "tags<<EOF" >> $GITHUB_OUTPUT
+          echo "$tags" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # 统计数量
+          count=$(echo "$tags" | wc -l)
+          echo "release_count=$count" >> $GITHUB_OUTPUT
+
+      - name: Sync each release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔄 Syncing releases from $UPSTREAM_REPO to $CURRENT_REPO..."
+          
+          # 获取当前仓库已有的 releases
+          curl -s \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/$CURRENT_REPO/releases?per_page=100" \
+            > current_releases.json
+          
+          current_tags=$(jq -r '.[].tag_name' current_releases.json)
+          echo "Current releases: $current_tags"
+          
+          # 遍历上游 releases
+          jq -c '.[]' upstream_releases.json | while read release; do
+            tag=$(echo "$release" | jq -r '.tag_name')
+            name=$(echo "$release" | jq -r '.name')
+            body=$(echo "$release" | jq -r '.body')
+            prerelease=$(echo "$release" | jq -r '.prerelease')
+            draft=$(echo "$release" | jq -r '.draft')
+            
+            # 检查是否已存在
+            if echo "$current_tags" | grep -q "^${tag}$"; then
+              echo "⏭️  Release $tag already exists, skipping..."
+              continue
+            fi
+            
+            echo "📦 Creating release $tag..."
+            
+            # 创建临时目录下载 assets
+            mkdir -p /tmp/assets_$tag
+            
+            # 下载所有 assets
+            echo "$release" | jq -r '.assets[] | .browser_download_url' | while read url; do
+              if [ -n "$url" ]; then
+                filename=$(basename "$url")
+                echo "  ↓ Downloading $filename..."
+                curl -sL -o "/tmp/assets_$tag/$filename" "$url"
+              fi
+            done
+            
+            # 检查是否有文件
+            asset_count=$(ls -1 /tmp/assets_$tag 2>/dev/null | wc -l)
+            if [ "$asset_count" -eq 0 ]; then
+              echo "  ⚠️  No assets found for $tag, creating release without files..."
+            fi
+            
+            # 创建 release
+            release_data=$(cat <<EOF
+          {
+            "tag_name": "$tag",
+            "name": "$name",
+            "body": "$(echo "$body" | sed 's/"/\\"/g' | tr '\n' '\\n')",
+            "draft": $draft,
+            "prerelease": $prerelease
+          }
+          EOF
+          )
+            
+            # 创建 release API 调用
+            create_response=$(curl -s \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/$CURRENT_REPO/releases" \
+              -d "$release_data")
+            
+            release_id=$(echo "$create_response" | jq -r '.id // empty')
+            upload_url=$(echo "$create_response" | jq -r '.upload_url // empty' | sed 's/{.*//')
+            
+            if [ -n "$release_id" ] && [ -n "$upload_url" ]; then
+              echo "  ✅ Release created with ID $release_id"
+              
+              # 上传 assets
+              for asset in /tmp/assets_$tag/*; do
+                if [ -f "$asset" ]; then
+                  filename=$(basename "$asset")
+                  echo "  ↑ Uploading $filename..."
+                  curl -s \
+                    -X POST \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                    -H "Content-Type: application/octet-stream" \
+                    "${upload_url}?name=$filename" \
+                    --data-binary "@$asset" > /dev/null
+                fi
+              done
+            else
+              echo "  ❌ Failed to create release: $(echo "$create_response" | jq -r '.message // .')"
+            fi
+            
+            # 清理
+            rm -rf /tmp/assets_$tag
+          done
+          
+          echo "✅ Sync completed!"
+
+      - name: Summary
+        run: |
+          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Upstream repo**: $UPSTREAM_REPO" >> $GITHUB_STEP_SUMMARY
+          echo "- **Current repo**: $CURRENT_REPO" >> $GITHUB_STEP_SUMMARY
+          echo "- **Releases found**: ${{ steps.fetch.outputs.release_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Sync time**: $(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
