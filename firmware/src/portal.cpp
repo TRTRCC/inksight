@@ -3,10 +3,16 @@
 #include "storage.h"
 #include "network.h"
 
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#define WebServer ESP8266WebServer
+#else
 #include <WiFi.h>
 #include <WebServer.h>
-#include <DNSServer.h>
 #include <esp_system.h>
+#endif
+#include <DNSServer.h>
 
 #include "../data/portal_html.h"
 
@@ -71,7 +77,11 @@ static bool isValidUrl(const String &url) {
 
 static String generatePairCode() {
     char buf[7];
+#ifdef ESP8266
+    snprintf(buf, sizeof(buf), "%06u", (unsigned)(RANDOM_REG32 % 1000000));
+#else
     snprintf(buf, sizeof(buf), "%06u", (unsigned)(esp_random() % 1000000));
+#endif
     return String(buf);
 }
 
@@ -90,7 +100,7 @@ static void resetPortalProvisioningState() {
 
 void startCaptivePortal() {
     String mac = WiFi.macAddress();
-    String apName = "InkSight-" + mac.substring(mac.length() - 5);
+    String apName = "Fries-" + mac.substring(mac.length() - 5);
     apName.replace(":", "");
 
     WiFi.mode(WIFI_AP_STA);
@@ -121,7 +131,13 @@ void startCaptivePortal() {
             String ssid = WiFi.SSID(i);
             if (ssid.length() == 0) continue;
             int rssi = WiFi.RSSI(i);
-            bool secure = (WiFi.encryptionType(i) != WIFI_AUTH_OPEN);
+            bool secure = (WiFi.encryptionType(i) !=
+#ifdef ESP8266
+                AUTH_OPEN
+#else
+                WIFI_AUTH_OPEN
+#endif
+            );
             int found = -1;
             for (int j = 0; j < count; j++) {
                 if (best[j].ssid == ssid) { found = j; break; }

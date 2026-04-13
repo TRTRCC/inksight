@@ -27,7 +27,7 @@ def _load_web_page_html(filename: str) -> str:
 
 
 def _build_primary_config_url(mac: Optional[str] = None) -> Optional[str]:
-    base = os.getenv("INKSIGHT_PRIMARY_WEBAPP_URL", "").strip().rstrip("/")
+    base = os.getenv("Fries_PRIMARY_WEBAPP_URL", "").strip().rstrip("/")
     if not base:
         return None
     target = f"{base}/config"
@@ -47,7 +47,7 @@ def _legacy_config_bridge_html(mac: Optional[str] = None) -> str:
         if primary_url
         else (
             '<code style="padding:2px 6px;background:#f3f4f6;border-radius:6px">'
-            "INKSIGHT_PRIMARY_WEBAPP_URL"
+            "Fries_PRIMARY_WEBAPP_URL"
             "</code>"
         )
     )
@@ -57,7 +57,7 @@ def _legacy_config_bridge_html(mac: Optional[str] = None) -> str:
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>InkSight Config</title>
+    <title>Fries Config</title>
   </head>
   <body style="margin:0;background:#fffdf8;color:#1f2937;font:16px/1.6 system-ui,sans-serif">
     <main style="max-width:720px;margin:0 auto;padding:64px 24px">
@@ -74,7 +74,7 @@ def _legacy_config_bridge_html(mac: Optional[str] = None) -> str:
         </a>
       </div>
       <p style="margin:0;color:#6b7280">
-        If you want automatic redirects here, set <code>INKSIGHT_PRIMARY_WEBAPP_URL</code> to your web app base URL.
+        If you want automatic redirects here, set <code>Fries_PRIMARY_WEBAPP_URL</code> to your web app base URL.
       </p>
     </main>
   </body>

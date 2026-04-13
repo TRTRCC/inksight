@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 from .db import get_main_db
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "inksight.db")
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "Fries.db")
 
 
 async def init_stats_db():

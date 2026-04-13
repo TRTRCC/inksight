@@ -21,7 +21,7 @@ The homepage is the easiest place to understand the product map: **Mode Plaza, W
 
 - This is the best place to browse the content ecosystem and see what the community is making.
 - The current page supports **search**, **category filters**, and a **publish mode** entry.
-- If you are still deciding whether InkSight fits your workflow, start here.
+- If you are still deciding whether Fries fits your workflow, start here.
 
 ![Mode Plaza screenshot](/images/docs/discover-en.png)
 

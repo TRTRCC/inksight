@@ -5,7 +5,11 @@ static const char *CACHE_FILE = "/cache.bmp";
 static bool fsReady = false;
 
 bool cacheInit() {
-    if (!LittleFS.begin(true)) {  // true = format on failure
+#ifdef ESP8266
+    if (!LittleFS.begin()) {
+#else
+    if (!LittleFS.begin(true)) {  // true = format on failure (ESP32 only)
+#endif
         Serial.println("LittleFS mount failed");
         return false;
     }

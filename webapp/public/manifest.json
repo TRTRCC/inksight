@@ -1,7 +1,7 @@
 {
-  "name": "InkSight Remote",
-  "short_name": "InkSight",
-  "description": "InkSight 智能墨水屏遥控器",
+  "name": "Fries Remote",
+  "short_name": "Fries",
+  "description": "Fries 智能墨水屏遥控器",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fafaf7",

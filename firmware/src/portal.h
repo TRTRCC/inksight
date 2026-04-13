@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_PORTAL_H
-#define INKSIGHT_PORTAL_H
+#ifndef Fries_PORTAL_H
+#define Fries_PORTAL_H
 
 #include <Arduino.h>
 
@@ -13,4 +13,4 @@ void startCaptivePortal();
 // Process pending portal HTTP/DNS requests (call in loop)
 void handlePortalClients();
 
-#endif // INKSIGHT_PORTAL_H
+#endif // Fries_PORTAL_H

@@ -1,0 +1,8 @@
+{
+  "/admin-login/page": "app/admin-login/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/devices/page": "app/devices/page.js",
+  "/openwrt/page": "app/openwrt/page.js",
+  "/page": "app/page.js",
+  "/users/page": "app/users/page.js"
+}

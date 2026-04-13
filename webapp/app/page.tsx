@@ -261,7 +261,7 @@ export default async function Home() {
                 Open Source &middot; ESP32-C3 &middot; E-Ink
               </p>
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-ink leading-tight mb-6">
-                {isEn ? "InkSight" : "墨鱼AI墨水屏"}
+                {isEn ? "Fries" : "墨鱼AI墨水屏"}
                 <br />
                 <span className="text-ink-muted text-3xl md:text-4xl lg:text-5xl">
                   {isEn ? "Your Multi-Scenario AI Companion on Desk" : "桌面上的多场景AI搭档"}
@@ -269,7 +269,7 @@ export default async function Home() {
               </h1>
               <p className="text-lg text-ink-light leading-relaxed mb-8 max-w-lg">
                 {isEn
-                  ? "InkSight is an AI e-ink desk companion with one website for flashing, configuration, preview, and discovering new modes."
+                  ? "Fries is an AI e-ink desk companion with one website for flashing, configuration, preview, and discovering new modes."
                   : "墨鱼AI墨水屏是一款支持在线刷机、设备配置、无设备预览与模式广场的 AI 电子墨水屏桌面伴侣。"}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -299,7 +299,7 @@ export default async function Home() {
               <div className="relative w-full max-w-md aspect-[4/3] rounded-sm border border-ink/10 overflow-hidden">
                 <Image
                   src={isEn ? "/images/intro_eng.jpg" : "/images/intro.jpg"}
-                  alt={isEn ? "InkSight product preview" : "墨鱼AI墨水屏展示图"}
+                  alt={isEn ? "Fries product preview" : "墨鱼AI墨水屏展示图"}
                   fill
                   className="object-cover"
                   priority
@@ -494,7 +494,7 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl px-6 py-20 text-center">
           <Sparkles size={28} className="mx-auto text-ink-light mb-4" />
           <h2 className="font-serif text-3xl font-bold text-ink mb-4">
-            {isEn ? "Start Your InkSight Journey" : "开始体验墨鱼AI墨水屏"}
+            {isEn ? "Start Your Fries Journey" : "开始体验墨鱼AI墨水屏"}
           </h2>
           <p className="text-ink-light mb-8 max-w-md mx-auto">
             {isEn ? "No coding required. Flash firmware directly in browser with an ESP32 and E-Ink panel." : "无需编程基础，通过浏览器即可完成固件烧录。"}
@@ -515,7 +515,7 @@ export default async function Home() {
               </Button>
             </Link>
             <a
-              href="https://github.com/datascale-ai/inksight"
+              href="https://github.com/datascale-ai/Fries"
               target="_blank"
               rel="noopener noreferrer"
             >

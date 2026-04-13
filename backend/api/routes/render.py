@@ -281,7 +281,7 @@ async def get_widget(
     return StreamingResponse(
         iter([buf.getvalue()]),
         media_type="image/png",
-        headers={"Cache-Control": "public, max-age=300", "X-InkSight-Mode": persona},
+        headers={"Cache-Control": "public, max-age=300", "X-Fries-Mode": persona},
     )
 
 
@@ -302,7 +302,7 @@ async def preview(
     colors: int = Query(default=2, ge=2, le=4),
     ui_language: Optional[str] = Query(default=None, description="Preview only: zh|en, overrides device mode_language"),
     x_device_token: Optional[str] = Header(default=None),
-    x_inksight_llm_api_key: Optional[str] = Header(default=None),
+    x_Fries_llm_api_key: Optional[str] = Header(default=None),
     ink_session: Optional[str] = Cookie(default=None),
 ):
     if mac:
@@ -347,7 +347,7 @@ async def preview(
             preview_memo_text=(memo_text if isinstance(memo_text, str) else None),
             preview_ui_language=_preview_ui_lang,
             current_user_id=current_user_id,
-            user_api_key=x_inksight_llm_api_key,
+            user_api_key=x_Fries_llm_api_key,
             intent_only=(intent == 1),
             colors=colors,
         )
@@ -435,7 +435,7 @@ async def preview_stream(
     colors: int = Query(default=2, ge=2, le=4),
     ui_language: Optional[str] = Query(default=None, description="Preview only: zh|en, overrides device mode_language"),
     x_device_token: Optional[str] = Header(default=None),
-    x_inksight_llm_api_key: Optional[str] = Header(default=None),
+    x_Fries_llm_api_key: Optional[str] = Header(default=None),
     ink_session: Optional[str] = Cookie(default=None),
 ):
     if mac:
@@ -481,7 +481,7 @@ async def preview_stream(
                 preview_memo_text=(memo_text if isinstance(memo_text, str) else None),
                 preview_ui_language=_preview_ui_lang,
                 current_user_id=current_user_id,
-                user_api_key=x_inksight_llm_api_key,
+                user_api_key=x_Fries_llm_api_key,
                 colors=colors,
             )
             # 如果 API key 无效，返回错误事件

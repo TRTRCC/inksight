@@ -14,34 +14,34 @@
       },
       "author": {
         "type": "string",
-        "default": "InkSight"
+        "default": "Fries"
       }
     },
     "temperature": 0.85,
     "fallback": {
       "quote": "把今天过好，就是对未来最好的投资。",
-      "author": "InkSight"
+      "author": "Fries"
     },
     "fallback_pool": [
       {
         "quote": "把今天过好，就是对未来最好的投资。",
-        "author": "InkSight"
+        "author": "Fries"
       },
       {
         "quote": "你不需要更快，你需要更稳。",
-        "author": "InkSight"
+        "author": "Fries"
       },
       {
         "quote": "别等灵感，先把第一步做完。",
-        "author": "InkSight"
+        "author": "Fries"
       },
       {
         "quote": "把难事拆小，把小事做完。",
-        "author": "InkSight"
+        "author": "Fries"
       },
       {
         "quote": "减少选择，增加执行。",
-        "author": "InkSight"
+        "author": "Fries"
       }
     ]
   },

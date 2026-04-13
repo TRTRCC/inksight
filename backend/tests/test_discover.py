@@ -38,7 +38,7 @@ async def client(tmp_path):
         await db.commit()
 
     # Redirect all database paths to temp files
-    test_main_db = str(tmp_path / "test_inksight.db")
+    test_main_db = str(tmp_path / "test_Fries.db")
     test_cache_db = str(tmp_path / "test_cache.db")
 
     with patch.object(db_mod, "_MAIN_DB_PATH", test_main_db), \

@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-InkSight ("inco" / 墨鱼) is a smart e-ink desktop companion: an ESP32-C3 device that displays LLM-generated content on a 4.2" e-ink screen. The system consists of a Python FastAPI backend, a Next.js web app, static web config pages, and ESP32 firmware.
+Fries ("inco" / 墨鱼) is a smart e-ink desktop companion: an ESP32-C3 device that displays LLM-generated content on a 4.2" e-ink screen. The system consists of a Python FastAPI backend, a Next.js web app, static web config pages, and ESP32 firmware.
 
 ## Commands
 
@@ -96,7 +96,7 @@ Optional JSON mode fields worth knowing:
 - `smart` — automatic time-based mode matching
 
 **Data stores** — two SQLite databases:
-- `inksight.db` — device configs, config history, device state (managed by `core/config_store.py`)
+- `Fries.db` — device configs, config history, device state (managed by `core/config_store.py`)
 - `cache.db` — rendered image cache (managed by `core/cache.py`)
 
 **LLM providers** configured in `core/content.py:LLM_CONFIGS`:
@@ -137,7 +137,7 @@ Static HTML pages served by the FastAPI app:
 ### Web App (`webapp/`)
 
 Next.js 16 app (App Router) with Tailwind CSS v4. Serves the public website and the Web Flasher for firmware flashing via WebSerial. Environment variables:
-- `INKSIGHT_BACKEND_API_BASE` — server-side proxy target (default `http://127.0.0.1:8080`)
+- `Fries_BACKEND_API_BASE` — server-side proxy target (default `http://127.0.0.1:8080`)
 - `NEXT_PUBLIC_FIRMWARE_API_BASE` — browser-side API base (optional)
 
 ### Firmware (`firmware/`)

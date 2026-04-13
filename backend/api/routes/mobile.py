@@ -87,7 +87,7 @@ def _pick_summary(content: dict) -> str:
 def _fallback_content(mode_id: str, city: str) -> dict:
     return {
         "title": f"{mode_id} fallback",
-        "text": "InkSight 正在等待可用的 LLM 配置。",
+        "text": "Fries 正在等待可用的 LLM 配置。",
         "summary": f"当前未配置 API key，先返回 {mode_id} 的占位内容。",
         "city": city,
     }

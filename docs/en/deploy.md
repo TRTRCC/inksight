@@ -1,6 +1,6 @@
 # Local Deployment and Self-Hosting
 
-This document explains how to run InkSight locally and how the current codebase is structured.
+This document explains how to run Fries locally and how the current codebase is structured.
 If you only want a product overview, start with the repository `README.md`.
 This guide is mainly for **developers, self-hosters, and anyone debugging the full backend + webapp + device flow**.
 
@@ -9,7 +9,7 @@ This guide is mainly for **developers, self-hosters, and anyone debugging the fu
 Use this guide if you want to:
 
 - run the backend and WebApp locally
-- self-host your own InkSight instance
+- self-host your own Fries instance
 - debug flashing, configuration, preview, or API behavior
 
 ## 2. Project structure
@@ -85,7 +85,7 @@ The sample file is located at: `webapp/.env.example`
 
 Current key variables:
 
-- `INKSIGHT_BACKEND_API_BASE=http://127.0.0.1:8080`
+- `Fries_BACKEND_API_BASE=http://127.0.0.1:8080`
 - `NEXT_PUBLIC_FIRMWARE_API_BASE=` (optional)
 
 For local development, the recommended setup is:
@@ -174,7 +174,7 @@ Default ports are:
 - frontend: `3000`
 - backend: `8080`
 
-If you change ports, also update `INKSIGHT_BACKEND_API_BASE` accordingly.
+If you change ports, also update `Fries_BACKEND_API_BASE` accordingly.
 
 ### API calls fail
 

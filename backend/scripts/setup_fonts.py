@@ -56,7 +56,7 @@ ALIAS_FONT_NAMES = [
 
 def _fetch_manifest(family: str) -> dict:
     url = _LIST_API.format(family=family)
-    req = urllib.request.Request(url, headers={"User-Agent": "InkSight-FontSetup/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Fries-FontSetup/1.0"})
     with urllib.request.urlopen(req, timeout=30) as resp:
         raw = resp.read().decode("utf-8")
     prefix = ")]}\'"
@@ -143,7 +143,7 @@ def _install_vector_fonts(force: bool) -> tuple[int, int]:
             continue
         try:
             target = os.path.join(TRUETYPE_DIR, name)
-            _download_file(url, target, "InkSight-FontSetup/1.0")
+            _download_file(url, target, "Fries-FontSetup/1.0")
             size_mb = os.path.getsize(target) / (1024 * 1024)
             print(f"  \u2713 {name} ({size_mb:.1f} MB)")
             success_count += 1
@@ -159,7 +159,7 @@ def _install_bitmap_fonts(force: bool) -> tuple[int, int, int]:
     for base_name, font_url in BITMAP_FONT_URLS.items():
         pcf_path = os.path.join(BITMAP_DIR, f"{base_name}.pcf")
         if force or not os.path.exists(pcf_path):
-            _download_file(font_url, pcf_path, "InkSight-BitmapFontSetup/1.0")
+            _download_file(font_url, pcf_path, "Fries-BitmapFontSetup/1.0")
             downloaded += 1
 
     linked = 0
@@ -191,7 +191,7 @@ def _install_bitmap_fonts(force: bool) -> tuple[int, int, int]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Download vector + bitmap fonts for InkSight")
+    parser = argparse.ArgumentParser(description="Download vector + bitmap fonts for Fries")
     parser.add_argument("--force", action="store_true", help="Force re-download even if files exist")
     args = parser.parse_args()
 

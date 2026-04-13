@@ -1,10 +1,10 @@
-"""Inksight Focus-mode alert external skill.
+"""Fries Focus-mode alert external skill.
 
 This skill is designed for high-priority QQ group emergency escalation:
 - receive a minimal alert payload from the planner
 - sanitize the summary to <= 20 chars
 - resolve per-device token from env
-- push critical alert to Inksight Focus endpoint
+- push critical alert to Fries Focus endpoint
 """
 
 from __future__ import annotations
@@ -143,8 +143,8 @@ def _load_token(mac_address: str) -> tuple[str | None, str | None]:
     Returns:
         (token, error_message)
     """
-    token_map_raw = os.getenv("INKSIGHT_ALERT_TOKEN_MAP", "").strip()
-    fallback_token = os.getenv("INKSIGHT_ALERT_TOKEN", "").strip()
+    token_map_raw = os.getenv("Fries_ALERT_TOKEN_MAP", "").strip()
+    fallback_token = os.getenv("Fries_ALERT_TOKEN", "").strip()
 
     if token_map_raw:
         try:
@@ -160,7 +160,7 @@ def _load_token(mac_address: str) -> tuple[str | None, str | None]:
     if fallback_token:
         return fallback_token, None
 
-    return None, "AUTH_MISSING: no token in INKSIGHT_ALERT_TOKEN_MAP or INKSIGHT_ALERT_TOKEN"
+    return None, "AUTH_MISSING: no token in Fries_ALERT_TOKEN_MAP or Fries_ALERT_TOKEN"
 
 
 def _load_vip_name_map() -> dict[str, str]:
@@ -187,16 +187,16 @@ def _load_vip_name_map() -> dict[str, str]:
         return {}
 
 
-class InksightAlertSkill(Skill):
+class FriesAlertSkill(Skill):
     @property
     def name(self) -> str:
-        return "send_to_inksight_focus_mode"
+        return "send_to_Fries_focus_mode"
 
     @property
     def description(self) -> str:
         return (
             "When high-priority emergency QQ @mentions from executives/VIP senders are detected, "
-            "push a critical local-refresh alert popup to Inksight e-ink devices to trigger Focus mode."
+            "push a critical local-refresh alert popup to Fries e-ink devices to trigger Focus mode."
         )
 
     def get_schema(self) -> dict[str, Any]:
@@ -205,7 +205,7 @@ class InksightAlertSkill(Skill):
             "properties": {
                 "mac_address": {
                     "type": "string",
-                    "description": "Target Inksight device MAC address.",
+                    "description": "Target Fries device MAC address.",
                 },
                 "sender": {
                     "type": "string",
@@ -307,7 +307,7 @@ class InksightAlertSkill(Skill):
                 or "VIP用户"
             )
             logger.info(
-                "InksightAlert start trace=%s sender_id=%s sender=%s channel=%s raw_len=%s summary_len=%s summary_strategy=%s",
+                "FriesAlert start trace=%s sender_id=%s sender=%s channel=%s raw_len=%s summary_len=%s summary_strategy=%s",
                 trace_id,
                 sender_id,
                 sender_display,
@@ -324,13 +324,13 @@ class InksightAlertSkill(Skill):
                     mac_address = fallback_mac
                 else:
                     logger.info(
-                        "InksightAlert blocked: trace=%s invalid or missing mac_address and no valid FOCUS_DEFAULT_MAC_ADDRESS",
+                        "FriesAlert blocked: trace=%s invalid or missing mac_address and no valid FOCUS_DEFAULT_MAC_ADDRESS",
                         trace_id,
                     )
 
             if not mac_address or not sender_display or not message_summary:
                 logger.info(
-                    "InksightAlert blocked: trace=%s missing required fields (mac=%s sender_display=%s summary_len=%s)",
+                    "FriesAlert blocked: trace=%s missing required fields (mac=%s sender_display=%s summary_len=%s)",
                     trace_id,
                     bool(mac_address),
                     bool(sender_display),
@@ -356,7 +356,7 @@ class InksightAlertSkill(Skill):
 
             if not mention_targets:
                 logger.info(
-                    "InksightAlert blocked by mention gate: trace=%s FOCUS_MENTION_TARGETS is empty (fail-closed)",
+                    "FriesAlert blocked by mention gate: trace=%s FOCUS_MENTION_TARGETS is empty (fail-closed)",
                     trace_id,
                 )
                 final_status = "FAILED"
@@ -373,7 +373,7 @@ class InksightAlertSkill(Skill):
 
             if not vip_user_ids:
                 logger.info(
-                    "InksightAlert blocked by VIP gate: trace=%s FOCUS_VIP_USER_IDS is empty (fail-closed)",
+                    "FriesAlert blocked by VIP gate: trace=%s FOCUS_VIP_USER_IDS is empty (fail-closed)",
                     trace_id,
                 )
                 final_status = "FAILED"
@@ -392,7 +392,7 @@ class InksightAlertSkill(Skill):
 
             if not sender_ok:
                 logger.info(
-                    "InksightAlert blocked by VIP gate: trace=%s sender_id=%s sender=%s allowed_ids=%s channel=%s",
+                    "FriesAlert blocked by VIP gate: trace=%s sender_id=%s sender=%s allowed_ids=%s channel=%s",
                     trace_id,
                     sender_id,
                     sender,
@@ -412,7 +412,7 @@ class InksightAlertSkill(Skill):
             urgency_source = f"{raw_message} {message_summary}".strip()
             if urgent_keywords and not _contains_any_keyword(urgency_source, urgent_keywords):
                 logger.info(
-                    "InksightAlert blocked by urgency gate: trace=%s sender=%s summary=%s keywords=%s",
+                    "FriesAlert blocked by urgency gate: trace=%s sender=%s summary=%s keywords=%s",
                     trace_id,
                     sender,
                     message_summary,
@@ -432,7 +432,7 @@ class InksightAlertSkill(Skill):
 
             if mention_targets and not _has_mention_target(raw_message, mentioned_users, mention_targets):
                 logger.info(
-                    "InksightAlert blocked by mention gate (position-independent): trace=%s sender=%s mention_targets=%s mentioned_users=%s raw_message=%s",
+                    "FriesAlert blocked by mention gate (position-independent): trace=%s sender=%s mention_targets=%s mentioned_users=%s raw_message=%s",
                     trace_id,
                     sender,
                     mention_targets,
@@ -451,23 +451,23 @@ class InksightAlertSkill(Skill):
                     error="policy_mention_not_matched",
                 )
 
-            base_url = os.getenv("INKSIGHT_BASE_URL", "").strip().rstrip("/")
+            base_url = os.getenv("Fries_BASE_URL", "").strip().rstrip("/")
             if not base_url:
                 final_status = "FAILED"
-                final_detail = "missing INKSIGHT_BASE_URL"
-                final_error = "missing INKSIGHT_BASE_URL"
+                final_detail = "missing Fries_BASE_URL"
+                final_error = "missing Fries_BASE_URL"
                 return SkillResult(
                     success=False,
                     data={
                         "status": "FAILED",
-                        "detail": "FAILED: missing INKSIGHT_BASE_URL",
+                        "detail": "FAILED: missing Fries_BASE_URL",
                     },
-                    error="missing INKSIGHT_BASE_URL",
+                    error="missing Fries_BASE_URL",
                 )
 
             token, token_err = _load_token(mac_address)
             if not token:
-                logger.warning("InksightAlert auth missing: trace=%s mac=%s err=%s", trace_id, mac_address, token_err)
+                logger.warning("FriesAlert auth missing: trace=%s mac=%s err=%s", trace_id, mac_address, token_err)
                 final_status = "FAILED"
                 final_detail = str(token_err)
                 final_error = str(token_err)
@@ -493,7 +493,7 @@ class InksightAlertSkill(Skill):
             }
 
             logger.info(
-                "InksightAlert sending: trace=%s mac=%s sender_id=%s sender=%s channel=%s summary=%s",
+                "FriesAlert sending: trace=%s mac=%s sender_id=%s sender=%s channel=%s summary=%s",
                 trace_id,
                 mac_address,
                 sender_id,
@@ -506,14 +506,14 @@ class InksightAlertSkill(Skill):
             resp_status = resp.status_code
 
             if 200 <= resp.status_code < 300:
-                logger.info("InksightAlert success: trace=%s mac=%s status=%s", trace_id, mac_address, resp.status_code)
+                logger.info("FriesAlert success: trace=%s mac=%s status=%s", trace_id, mac_address, resp.status_code)
                 final_status = "SUCCESS"
                 final_detail = f"upstream {resp.status_code}"
                 return SkillResult(
                     success=True,
                     data={
                         "status": "SUCCESS",
-                        "detail": "SUCCESS: alert pushed to Inksight Focus mode",
+                        "detail": "SUCCESS: alert pushed to Fries Focus mode",
                         "mac_address": mac_address,
                         "sender": sender_display,
                         "message_summary": message_summary,
@@ -521,7 +521,7 @@ class InksightAlertSkill(Skill):
                 )
 
             logger.warning(
-                "InksightAlert upstream failed: trace=%s mac=%s status=%s body=%s",
+                "FriesAlert upstream failed: trace=%s mac=%s status=%s body=%s",
                 trace_id,
                 mac_address,
                 resp.status_code,
@@ -542,7 +542,7 @@ class InksightAlertSkill(Skill):
         except Exception as exc:
             # Never raise to break the main agent process.
             err_text = str(exc) or exc.__class__.__name__
-            logger.exception("InksightAlert exception: trace=%s err=%s", trace_id, err_text)
+            logger.exception("FriesAlert exception: trace=%s err=%s", trace_id, err_text)
             final_status = "ERROR"
             final_detail = err_text
             final_error = err_text
@@ -556,7 +556,7 @@ class InksightAlertSkill(Skill):
             )
         finally:
             logger.info(
-                "InksightAlert done: trace=%s status=%s detail=%s error=%s target=%s http_status=%s",
+                "FriesAlert done: trace=%s status=%s detail=%s error=%s target=%s http_status=%s",
                 trace_id,
                 final_status,
                 final_detail,

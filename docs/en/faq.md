@@ -1,6 +1,6 @@
 # FAQ
 
-If you are already using InkSight and something feels off, missing, or inconsistent, this is the fastest place to check first.
+If you are already using Fries and something feels off, missing, or inconsistent, this is the fastest place to check first.
 
 ## 1. Where should I start reading?
 
@@ -57,7 +57,7 @@ python -m uvicorn api.index:app --host 0.0.0.0 --port 18080
 
 Check:
 
-- `INKSIGHT_BACKEND_API_BASE` is reachable
+- `Fries_BACKEND_API_BASE` is reachable
 - backend `/api/firmware/*` endpoints work
 - the browser supports WebSerial
 - the USB cable is a real data cable

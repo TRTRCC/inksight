@@ -1,6 +1,6 @@
 {
-  "InkSight 配置管理": "InkSight Configuration",
-  "InkSight - 模式编辑器": "InkSight - Mode Editor",
+  "Fries 配置管理": "Fries Configuration",
+  "Fries - 模式编辑器": "Fries - Mode Editor",
   "模式编辑器": "Mode Editor",
   "点击「预览」按钮查看效果": "Click Preview to render",
   "实时预览": "Live Preview",
@@ -40,7 +40,7 @@
   "请输入习惯名称": "Please enter habit name",
   "打卡失败:": "Check-in failed:",
   "删除失败:": "Delete failed:",
-  "欢迎使用 InkSight": "Welcome to InkSight",
+  "欢迎使用 Fries": "Welcome to Fries",
   "让我们快速完成初始配置": "Let's finish initial setup quickly",
   "AI 模型": "AI Model",
   "内容模式": "Content Modes",

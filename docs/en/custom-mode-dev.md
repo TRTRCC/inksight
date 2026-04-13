@@ -1,6 +1,6 @@
 # Custom Mode Development Guide
 
-InkSight uses pure JSON configuration to define and extend content modes.
+Fries uses pure JSON configuration to define and extend content modes.
 
 ## 1. Design Principles
 

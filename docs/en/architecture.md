@@ -1,10 +1,10 @@
-# InkSight Architecture
+# Fries Architecture
 
 This document reflects the current repository structure and explains the main layers, render pipeline, mode system, and storage model.
 
 ## 1. High-level structure
 
-InkSight currently has three major parts:
+Fries currently has three major parts:
 
 - **Firmware** — ESP32 firmware for device provisioning, fetching rendered images on a schedule, driving the e-paper display, button interactions, and low-power deep sleep
 - **Backend** — FastAPI service for configuration, weather context, content generation, rendering, caching, and stats
@@ -80,7 +80,7 @@ Weather-related context is mainly handled in:
 
 The backend currently uses two SQLite databases:
 
-- `inksight.db` for device config, config history, and device state
+- `Fries.db` for device config, config history, and device state
 - `cache.db` for rendered image caching
 
 Cache lifetime is derived from refresh interval and mode count so repeated renders are cheaper and faster.
@@ -136,7 +136,7 @@ Both LLM text generation and image generation are wrapped through OpenAI-compati
 
 ## 7. Why caching matters
 
-InkSight content is not always cheap or instant to generate, especially when a mode:
+Fries content is not always cheap or instant to generate, especially when a mode:
 
 - calls weather APIs
 - calls language or image models

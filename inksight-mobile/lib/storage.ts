@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-const TOKEN_KEY = 'inksight.auth.token';
-const ONBOARDING_SEEN_KEY = 'inksight.onboarding.seen';
-const LOCALE_KEY = 'inksight.locale';
-const NOTIFICATION_TIME_KEY = 'inksight.notifications.time';
-const PUSH_REGISTRATION_KEY = 'inksight.push.registration';
-const LOCAL_NOTIFICATION_ID_KEY = 'inksight.notifications.local.id';
+const TOKEN_KEY = 'Fries.auth.token';
+const ONBOARDING_SEEN_KEY = 'Fries.onboarding.seen';
+const LOCALE_KEY = 'Fries.locale';
+const NOTIFICATION_TIME_KEY = 'Fries.notifications.time';
+const PUSH_REGISTRATION_KEY = 'Fries.push.registration';
+const LOCAL_NOTIFICATION_ID_KEY = 'Fries.notifications.local.id';
 
 export type StoredPushRegistration = {
   push_token: string;

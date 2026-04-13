@@ -699,7 +699,7 @@ function MePhone({ locale }: { locale: Locale }) {
     { icon: Bell, title: locale === "en" ? "Notifications" : "通知", subtitle: locale === "en" ? "Daily at 8:00" : "每日 8:00 推送" },
     { icon: Languages, title: locale === "en" ? "Language" : "语言", subtitle: locale === "en" ? "Chinese / English" : "中文 / English" },
     { icon: Settings2, title: locale === "en" ? "Cache & privacy" : "缓存与隐私", subtitle: locale === "en" ? "1.0 MB local cache" : "本地缓存约 1.0 MB" },
-    { icon: ShieldCheck, title: locale === "en" ? "About InkSight" : "关于 InkSight", subtitle: locale === "en" ? "Zen-like mobile companion" : "慢信息移动伴侣" },
+    { icon: ShieldCheck, title: locale === "en" ? "About Fries" : "关于 Fries", subtitle: locale === "en" ? "Zen-like mobile companion" : "慢信息移动伴侣" },
   ];
 
   return (
@@ -752,7 +752,7 @@ export function MobileAppShowcase({ locale }: { locale: Locale }) {
             {locale === "en" ? "Mobile App Prototype" : "移动端原型实现"}
           </span>
           <h1 className="mt-5 font-serif text-4xl leading-tight text-ink md:text-6xl">
-            {locale === "en" ? "InkSight mobile, translated from spec into a browsable product prototype." : "把 InkSight 手机 App 设计文档，直接落成可浏览的产品原型。"}
+            {locale === "en" ? "Fries mobile, translated from spec into a browsable product prototype." : "把 Fries 手机 App 设计文档，直接落成可浏览的产品原型。"}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-8 text-ink-light md:text-lg">
             {locale === "en"

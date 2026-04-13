@@ -376,7 +376,7 @@ export default function DiscoverPage() {
               </h1>
             </div>
             <p className="text-base md:text-lg text-ink-light mt-4 max-w-2xl mx-auto">
-              {tr("发现、分享并安装由 InkSight 社区创造的个性化墨水屏应用。", "Discover, share, and install personalized e-ink modes created by the InkSight community.")}
+              {tr("发现、分享并安装由 Fries 社区创造的个性化墨水屏应用。", "Discover, share, and install personalized e-ink modes created by the Fries community.")}
             </p>
           </div>
 

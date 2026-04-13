@@ -57,7 +57,7 @@ python -m uvicorn api.index:app --host 0.0.0.0 --port 18080
 
 优先检查：
 
-- `INKSIGHT_BACKEND_API_BASE` 是否可达
+- `Fries_BACKEND_API_BASE` 是否可达
 - 后端 `/api/firmware/*` 是否正常
 - 浏览器是否支持 WebSerial
 - USB 线是否真的是数据线

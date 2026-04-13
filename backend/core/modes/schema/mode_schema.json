@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "InkSight Mode Definition",
+  "title": "Fries Mode Definition",
   "description": "JSON Schema for defining custom e-ink display modes",
   "type": "object",
   "required": ["mode_id", "display_name", "content", "layout"],

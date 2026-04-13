@@ -25,7 +25,7 @@ router = APIRouter(tags=["config"])
 async def post_config(
     request: Request,
     body: ConfigRequest,
-    x_inksight_client: Optional[str] = Header(default=None),
+    x_Fries_client: Optional[str] = Header(default=None),
     x_device_token: Optional[str] = Header(default=None),
     authorization: Optional[str] = Header(default=None),
     ink_session: Optional[str] = Cookie(default=None),
@@ -43,7 +43,7 @@ async def post_config(
     modes = data.get("modes", [])
     logger.info(
         "[CONFIG SAVE REQUEST] source=%s mac=%s modes=%s refresh_strategy=%s",
-        x_inksight_client or "unknown",
+        x_Fries_client or "unknown",
         mac,
         len(modes) if isinstance(modes, list) else 0,
         data.get("refresh_strategy"),

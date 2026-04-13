@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin-login/page": "app/admin-login/page.js",
+  "/config/page": "app/config/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/devices/page": "app/devices/page.js",
+  "/firmware/page": "app/firmware/page.js",
+  "/groups/page": "app/groups/page.js",
+  "/logs/page": "app/logs/page.js",
+  "/openwrt/page": "app/openwrt/page.js",
+  "/page": "app/page.js",
+  "/security/page": "app/security/page.js",
+  "/users/page": "app/users/page.js"
+}

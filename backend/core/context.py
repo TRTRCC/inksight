@@ -40,7 +40,7 @@ _context_cache: dict[str, tuple[Any, float]] = {}
 logger = logging.getLogger(__name__)
 
 _NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search"
-_NOMINATIM_USER_AGENT = "InkSight/1.0 (weather location search)"
+_NOMINATIM_USER_AGENT = "Fries/1.0 (weather location search)"
 _CN_TIMEZONE = "Asia/Shanghai"
 _CN_SEARCH_COUNTRY_CODE = "cn"
 _NOMINATIM_QUERY_SUFFIXES = ("市", "县", "区")

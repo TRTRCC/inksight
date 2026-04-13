@@ -80,13 +80,13 @@ export function Navbar() {
         <Link href={withLocalePath(locale, "/")} className="flex items-center gap-2 group">
           <Image 
             src="/images/logo.png" 
-            alt="InkSight Logo" 
+            alt="Fries Logo" 
             width={32} 
             height={32} 
             className="rounded-sm object-contain"
           />
           <span className="text-lg font-semibold text-ink tracking-tight">
-            {locale === "en" ? "InkSight" : "墨鱼"}
+            {locale === "en" ? "Fries" : "墨鱼"}
           </span>
         </Link>
 
@@ -102,7 +102,7 @@ export function Navbar() {
             </Link>
           ))}
           <a
-            href="https://github.com/datascale-ai/inksight"
+            href="https://github.com/datascale-ai/Fries"
             target="_blank"
             rel="noopener noreferrer"
             className="text-ink-light hover:text-ink transition-colors"
@@ -146,7 +146,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://github.com/datascale-ai/inksight"
+              href="https://github.com/datascale-ai/Fries"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-ink-light hover:text-ink transition-colors py-1"

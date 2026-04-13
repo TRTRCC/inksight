@@ -1,8 +1,8 @@
-# InkSight Widget Embedding Guide
+# Fries Widget Embedding Guide
 
 ## Overview
 
-InkSight provides a read-only Widget API, allowing you to embed e-paper content into various platforms' widgets.
+Fries provides a read-only Widget API, allowing you to embed e-paper content into various platforms' widgets.
 
 ## API Endpoint
 
@@ -36,7 +36,7 @@ GET /api/widget/{mac}?mode=STOIC&size=medium
 
 ```javascript
 let mac = "AA:BB:CC:DD:EE:FF"
-let server = "https://your-inksight-server.com"
+let server = "https://your-Fries-server.com"
 let url = `${server}/api/widget/${mac}?size=medium`
 
 let widget = new ListWidget()
@@ -78,12 +78,12 @@ Script.complete()
 ## macOS Widgetsmith / Übersicht
 
 ```coffeescript
-command: "curl -s 'https://your-server/api/widget/YOUR_MAC?size=large' -o /tmp/inksight.png && echo done"
+command: "curl -s 'https://your-server/api/widget/YOUR_MAC?size=large' -o /tmp/Fries.png && echo done"
 refreshFrequency: 1800000  # 30 minutes
 
 render: (output) ->
   """
-  <img src="/tmp/inksight.png" style="width:100%;height:100%;object-fit:contain">
+  <img src="/tmp/Fries.png" style="width:100%;height:100%;object-fit:contain">
   """
 ```
 

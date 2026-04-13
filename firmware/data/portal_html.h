@@ -6,7 +6,7 @@ const char PORTAL_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes">
-<title>InkSight 配网</title>
+<title>Fries 配网</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bk:#1a1a1a;--gy:#888;--bg:#fafaf7;--bd:#d4d4cf;--f:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--fs:'Georgia',serif}
@@ -76,7 +76,7 @@ body{font-family:var(--f);background:linear-gradient(135deg,#f5f5f0,#e8e8e0);col
 </div>
 <div class="hdr">
 <div class="logo">墨</div>
-<h1 id="logoText">InkSight <span style="font-weight:400;font-size:.85em">墨鱼</span></h1>
+<h1 id="logoText">Fries <span style="font-weight:400;font-size:.85em">墨鱼</span></h1>
 <p id="subtitle">WiFi 配网</p>
 </div>
 
@@ -127,7 +127,7 @@ body{font-family:var(--f);background:linear-gradient(135deg,#f5f5f0,#e8e8e0);col
 <div id="srvOfficialTip" style="font-size:.72rem;color:var(--gy)">将使用官方云服务生成内容</div>
 <div id="srvCustomWrap" class="hidden">
 <input type="text" class="inp" id="srvIn" value="http://本地服务IP:8080" placeholder="例如: http://192.168.1.100:8080">
-<div id="srvCusTip1" style="font-size:.68rem;color:var(--gy);margin-top:3px">输入你自己部署的 InkSight 后端地址（含端口）</div>
+<div id="srvCusTip1" style="font-size:.68rem;color:var(--gy);margin-top:3px">输入你自己部署的 Fries 后端地址（含端口）</div>
 <div style="margin-top:10px">
 <input type="text" class="inp" id="frontendPortIn" value="3000" placeholder="例如: 3000">
 <div id="srvCusTip2" style="font-size:.68rem;color:var(--gy);margin-top:3px">前端配置页端口，用于重启后跳转到 localhost:端口/config</div>
@@ -145,7 +145,7 @@ body{font-family:var(--f);background:linear-gradient(135deg,#f5f5f0,#e8e8e0);col
 
 <div class="link-box">
 <strong id="s2Next">下一步：</strong><span id="s2Auto">设备将自动重启并联网，请使用配对码继续完成认领与配置。</span><br>
-<div id="s2Warn" style="margin-top:8px;padding:8px 10px;background:#fef3c7;border-radius:6px;font-size:.75rem;color:#92400e;font-weight:500">⚠ 跳转前请先断开 InkSight 热点，重新连接您的家庭 / 办公 WiFi</div>
+<div id="s2Warn" style="margin-top:8px;padding:8px 10px;background:#fef3c7;border-radius:6px;font-size:.75rem;color:#92400e;font-weight:500">⚠ 跳转前请先断开 Fries 热点，重新连接您的家庭 / 办公 WiFi</div>
 </div>
 
 <div id="pairWrap" class="hidden" style="margin-top:12px;padding:12px;border:1px solid var(--bd);border-radius:8px;background:#f8fafc">
@@ -174,8 +174,8 @@ body{font-family:var(--f);background:linear-gradient(135deg,#f5f5f0,#e8e8e0);col
 var lang=localStorage.getItem('ink_lang')||'zh';
 var i18n={
 zh:{
-title:"InkSight 配网",
-logoText:"InkSight <span style=\"font-weight:400;font-size:.85em\">墨鱼</span>",
+title:"Fries 配网",
+logoText:"Fries <span style=\"font-weight:400;font-size:.85em\">墨鱼</span>",
 subtitle:"WiFi 配网",
 tabScan:"选择网络",
 tabMan:"手动输入",
@@ -187,7 +187,7 @@ srvTitle:"服务器地址",
 srvOff:"官方服务",
 srvCus:"自定义服务",
 srvOffTip:"将使用官方云服务生成内容",
-srvCusTip1:"输入你自己部署的 InkSight 后端地址（含端口）",
+srvCusTip1:"输入你自己部署的 Fries 后端地址（含端口）",
 srvCusTip2:"前端配置页端口，用于重启后跳转到 localhost:端口/config",
 srvUrlPh:"例如: http://192.168.1.100:8080",
 srvPortPh:"例如: 3000",
@@ -195,7 +195,7 @@ btnConn:"连接并保存",
 s2Title:"配网完成",
 s2Next:"下一步：",
 s2Auto:"设备将自动重启并联网，请使用配对码继续完成认领与配置。",
-s2Warn:"⚠ 跳转前请先断开 InkSight 热点，重新连接您的家庭 / 办公 WiFi",
+s2Warn:"⚠ 跳转前请先断开 Fries 热点，重新连接您的家庭 / 办公 WiFi",
 s2CodeLbl:"配对码",
 btnRest:"立即重启",
 btnCancel:"取消",
@@ -226,8 +226,8 @@ msgCancel:"自动重启已取消",
 msgScanFail:"扫描失败，请刷新页面重试或手动输入"
 },
 en:{
-title:"InkSight Setup",
-logoText:"InkSight",
+title:"Fries Setup",
+logoText:"Fries",
 subtitle:"WiFi Setup",
 tabScan:"Scan",
 tabMan:"Manual",
@@ -247,7 +247,7 @@ btnConn:"Connect & Save",
 s2Title:"Setup Complete",
 s2Next:"Next Step: ",
 s2Auto:"Device will restart and connect. Use the pairing code to bind.",
-s2Warn:"⚠ Please disconnect from InkSight hotspot and reconnect to your home WiFi before redirecting.",
+s2Warn:"⚠ Please disconnect from Fries hotspot and reconnect to your home WiFi before redirecting.",
 s2CodeLbl:"Pairing Code",
 btnRest:"Restart Now",
 btnCancel:"Cancel",
@@ -324,8 +324,8 @@ localStorage.setItem('ink_lang',lang);
 applyLang();
 }
 
-var OFFICIAL_SERVER='https://web.inksight.site/';
-var OFFICIAL_CONFIG_URL='https://www.inksight.site/config';
+var OFFICIAL_SERVER='https://web.www.993636.xyz/';
+var OFFICIAL_CONFIG_URL='https://www.www.993636.xyz/config';
 var LOCAL_DEFAULT_SERVER='http://本地服务IP:8080';
 var LOCAL_DEFAULT_FRONTEND_PORT='3000';
 var ssid='',ctm=null,devMac='',srvUrl='',srvMode='official',pairCode='',frontendPort=LOCAL_DEFAULT_FRONTEND_PORT;
@@ -531,7 +531,7 @@ if(d.mac){devMac=d.mac;document.getElementById('devMAC').textContent=d.mac;}
 if(d.battery)document.getElementById('devBat').textContent=d.battery;
 if(d.server_url){
 srvUrl=normalizeServerUrl(d.server_url);
-if(/(^|\/\/)(web\.|www\.)?inksight\.site(:|\/|$)/i.test(srvUrl)){
+if(/(^|\/\/)(web\.|www\.)?Fries\.site(:|\/|$)/i.test(srvUrl)){
 switchSrvMode('official');
 }else{
 document.getElementById('srvIn').value=srvUrl||LOCAL_DEFAULT_SERVER;

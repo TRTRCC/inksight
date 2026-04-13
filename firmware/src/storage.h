@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_STORAGE_H
-#define INKSIGHT_STORAGE_H
+#ifndef Fries_STORAGE_H
+#define Fries_STORAGE_H
 
 #include <Arduino.h>
 
@@ -42,4 +42,4 @@ void clearDeviceToken();
 void savePendingPairCode(const String &code);
 void clearPendingPairCode();
 
-#endif // INKSIGHT_STORAGE_H
+#endif // Fries_STORAGE_H

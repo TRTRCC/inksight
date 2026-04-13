@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_OFFLINE_CACHE_H
-#define INKSIGHT_OFFLINE_CACHE_H
+#ifndef Fries_OFFLINE_CACHE_H
+#define Fries_OFFLINE_CACHE_H
 
 #include <Arduino.h>
 

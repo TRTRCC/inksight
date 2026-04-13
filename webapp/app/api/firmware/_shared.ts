@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const backendBase =
-  process.env.INKSIGHT_BACKEND_API_BASE?.replace(/\/$/, "") ||
+  process.env.Fries_BACKEND_API_BASE?.replace(/\/$/, "") ||
   "http://127.0.0.1:8080";
 
 export async function proxyFirmwareApi(pathWithQuery: string) {

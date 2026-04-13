@@ -1,16 +1,16 @@
 English | [中文](README_ZH.md)
 
-# InkSight
+# Fries
 
 > A calm e-ink desk companion with one website for flashing, configuration, preview, and discovering new modes.
 
-Official website: [https://www.inksight.site](https://www.inksight.site)
+Official website: [https://www.www.993636.xyz](https://www.www.993636.xyz)
 
-![InkSight](images/intro_eng.jpg)
+![Fries](images/intro_eng.jpg)
 
 ## Why It Stands Out
 
-InkSight turns a small e-ink screen into a quiet, always-visible information surface for your desk.
+Fries turns a small e-ink screen into a quiet, always-visible information surface for your desk.
 Instead of another glowing notification feed, it gives you useful, beautiful, and customizable content in a paper-like form.
 
 - **Useful at a glance** — weather, countdowns, memos, habits, briefings, and daily prompts
@@ -30,11 +30,11 @@ Even if you are completely new to e-paper devices, ESP32 boards, or WebSerial, t
 - **Try it even without a device** through the no-device demo flow
 - **Discover community creations** in the mode plaza, then install and reuse ideas shared by other users
 
-This makes InkSight feel less like a kit with scattered tools and more like a complete product experience.
+This makes Fries feel less like a kit with scattered tools and more like a complete product experience.
 
 ## Rich Mode Library
 
-InkSight currently ships with **24 built-in modes**, including:
+Fries currently ships with **24 built-in modes**, including:
 
 - **Daily Picks** — quotes, books, facts, and seasonal context
 - **Weather Dashboard** — live weather with practical advice
@@ -52,7 +52,7 @@ You can also:
 
 ## Recommended Hardware
 
-InkSight is easiest to build with the following setup:
+Fries is easiest to build with the following setup:
 
 | Part | Recommended choice |
 |------|--------------------|
@@ -79,7 +79,7 @@ If you want to get a feel for the product before buying parts or setting up anyt
 
 ## Build the Device
 
-If you enjoy DIY hardware and want to build your own InkSight unit, or if you already have the parts but are not sure how to wire and assemble them, start here:
+If you enjoy DIY hardware and want to build your own Fries unit, or if you already have the parts but are not sure how to wire and assemble them, start here:
 
 ![Build the Device](images/build-device.png)
 

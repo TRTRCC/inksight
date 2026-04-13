@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_NETWORK_H
-#define INKSIGHT_NETWORK_H
+#ifndef Fries_NETWORK_H
+#define Fries_NETWORK_H
 
 #include <Arduino.h>
 
@@ -49,4 +49,4 @@ void syncNTP();
 // Advance software clock by one second
 void tickTime();
 
-#endif // INKSIGHT_NETWORK_H
+#endif // Fries_NETWORK_H

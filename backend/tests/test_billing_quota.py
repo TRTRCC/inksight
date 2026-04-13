@@ -561,7 +561,7 @@ class TestLlmPrecheckBehavior:
         from api.routes.modes import custom_mode_preview
 
         # 打开计费开关
-        monkeypatch.setenv("INKSIGHT_BILLING_ENABLED", "1")
+        monkeypatch.setenv("Fries_BILLING_ENABLED", "1")
 
         user_id = 123
 
@@ -641,7 +641,7 @@ class TestLlmPrecheckBehavior:
         """当 AI 生成模式额度为 0 时，应在调用 LLM 之前返回 402，且不调用 generate_mode_definition。"""
         from api.routes.modes import generate_mode
 
-        monkeypatch.setenv("INKSIGHT_BILLING_ENABLED", "1")
+        monkeypatch.setenv("Fries_BILLING_ENABLED", "1")
 
         user_id = 456
         body = {

@@ -6,7 +6,7 @@ import { buildAuthHeaders } from '@/lib/api-client';
 
 export async function shareTodayItem(item: TodayItem, options?: { sourceLabel?: string }) {
   const attribution = typeof item.content?.author === 'string' ? `\n\n${item.content.author}` : '';
-  const message = `${item.display_name}\n\n${item.summary}${attribution}\n\n${options?.sourceLabel || 'From InkSight'}`;
+  const message = `${item.display_name}\n\n${item.summary}${attribution}\n\n${options?.sourceLabel || 'From Fries'}`;
   return Share.share({
     title: item.display_name,
     message,
@@ -24,7 +24,7 @@ export async function shareRemoteImage(input: {
     return { ok: true, mode: 'web-open' as const };
   }
 
-  const targetUri = `${FileSystem.cacheDirectory || FileSystem.documentDirectory}${input.filename || `inksight-${Date.now()}.png`}`;
+  const targetUri = `${FileSystem.cacheDirectory || FileSystem.documentDirectory}${input.filename || `Fries-${Date.now()}.png`}`;
   await FileSystem.downloadAsync(input.url, targetUri, {
     headers: buildAuthHeaders(input.token, ''),
   });

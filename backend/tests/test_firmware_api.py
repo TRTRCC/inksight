@@ -28,17 +28,17 @@ async def client():
 def _sample_payload() -> dict:
     return {
         "source": "github_releases",
-        "repo": "datascale-ai/inksight",
+        "repo": "datascale-ai/Fries",
         "cached": False,
         "count": 1,
         "releases": [
             {
                 "version": "1.2.3",
                 "tag": "v1.2.3",
-                "download_url": "https://example.com/inksight-firmware-v1.2.3.bin",
+                "download_url": "https://example.com/Fries-firmware-v1.2.3.bin",
                 "chip_family": "ESP32-C3",
                 "manifest": {
-                    "name": "InkSight",
+                    "name": "Fries",
                     "version": "1.2.3",
                     "builds": [],
                 },
@@ -84,7 +84,7 @@ async def test_firmware_releases_latest_not_found(client, monkeypatch):
     async def _fake_loader(force_refresh: bool = False):
         return {
             "source": "github_releases",
-            "repo": "datascale-ai/inksight",
+            "repo": "datascale-ai/Fries",
             "cached": False,
             "count": 0,
             "releases": [],

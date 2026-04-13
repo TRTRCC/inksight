@@ -1,14 +1,14 @@
 """
-统一异常层级 for InkSight backend.
+统一异常层级 for Fries backend.
 
-所有自定义异常继承自 InkSightError，每个异常类型关联 HTTP 状态码。
+所有自定义异常继承自 FriesError，每个异常类型关联 HTTP 状态码。
 api/index.py 注册全局异常处理器将它们转为 JSON 响应。
 """
 from __future__ import annotations
 
 
-class InkSightError(Exception):
-    """Base error for all InkSight errors."""
+class FriesError(Exception):
+    """Base error for all Fries errors."""
 
     status_code: int = 500
 
@@ -18,7 +18,7 @@ class InkSightError(Exception):
         super().__init__(message)
 
 
-class LLMError(InkSightError):
+class LLMError(FriesError):
     """LLM provider errors (API timeout, rate limit, connection failure)."""
 
     status_code = 502
@@ -30,25 +30,25 @@ class LLMKeyMissingError(LLMError):
     status_code = 503
 
 
-class ContentGenerationError(InkSightError):
+class ContentGenerationError(FriesError):
     """Content generation failed (LLM returned invalid data, JSON parse error)."""
 
     status_code = 500
 
 
-class WeatherAPIError(InkSightError):
+class WeatherAPIError(FriesError):
     """Weather API call failed after retries."""
 
     status_code = 502
 
 
-class DeviceConfigError(InkSightError):
+class DeviceConfigError(FriesError):
     """Device configuration error (invalid MAC, missing config)."""
 
     status_code = 400
 
 
-class CacheError(InkSightError):
+class CacheError(FriesError):
     """Cache read/write error."""
 
     status_code = 500

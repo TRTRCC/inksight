@@ -48,7 +48,7 @@ def render_error(
     x = (screen_w - (bbox[2] - bbox[0])) // 2
     draw.text((x, icon_cy + 34), title, fill=EINK_FG, font=font_title)
 
-    detail = "Unable to reach InkSight cloud service."
+    detail = "Unable to reach Fries cloud service."
     bbox2 = font_detail.getbbox(detail)
     x2 = (screen_w - (bbox2[2] - bbox2[0])) // 2
     draw.text((x2, icon_cy + 62), detail, fill=EINK_FG, font=font_detail)

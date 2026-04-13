@@ -53,6 +53,6 @@
     "body": [
       {"type": "timetable_grid", "field": "slots", "font_size": 12, "margin_x": 6, "row_height": 30}
     ],
-    "footer": {"label": "TIMETABLE", "attribution_template": "— InkSight"}
+    "footer": {"label": "TIMETABLE", "attribution_template": "— Fries"}
   }
 }

@@ -1,12 +1,12 @@
 # 贡献指南
 
-感谢你对 InkSight 项目的关注！我们欢迎各种形式的贡献。
+感谢你对 Fries 项目的关注！我们欢迎各种形式的贡献。
 
 ## 如何贡献
 
 ### 报告 Bug
 
-1. 在 [Issues](https://github.com/datascale-ai/inksight/issues) 中搜索是否已有相同问题。
+1. 在 [Issues](https://github.com/datascale-ai/Fries/issues) 中搜索是否已有相同问题。
 2. 如果没有，创建新 Issue，请包含：
    - 问题的简要描述
    - 复现步骤

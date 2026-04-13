@@ -37,7 +37,7 @@ def _env_int(name: str, default: int) -> int:
 
 def _max_age_seconds() -> int | None:
     """None = disabled. Based on last access (mtime touched on each GET)."""
-    days = _env_int("INKSIGHT_UPLOADS_MAX_AGE_DAYS", 30)
+    days = _env_int("Fries_UPLOADS_MAX_AGE_DAYS", 30)
     if days <= 0:
         return None
     return days * 86400
@@ -45,7 +45,7 @@ def _max_age_seconds() -> int | None:
 
 def _max_total_bytes() -> int | None:
     """None = disabled."""
-    mb = _env_int("INKSIGHT_UPLOADS_MAX_TOTAL_MB", 512)
+    mb = _env_int("Fries_UPLOADS_MAX_TOTAL_MB", 512)
     if mb <= 0:
         return None
     return mb * 1024 * 1024
@@ -155,10 +155,10 @@ def cleanup_runtime_uploads(*, force: bool = False) -> None:
 
     if removed:
         logger.info(
-            "[UPLOADS] cleanup removed=%d INKSIGHT_UPLOADS_MAX_AGE_DAYS=%s INKSIGHT_UPLOADS_MAX_TOTAL_MB=%s",
+            "[UPLOADS] cleanup removed=%d Fries_UPLOADS_MAX_AGE_DAYS=%s Fries_UPLOADS_MAX_TOTAL_MB=%s",
             removed,
-            os.getenv("INKSIGHT_UPLOADS_MAX_AGE_DAYS", "30"),
-            os.getenv("INKSIGHT_UPLOADS_MAX_TOTAL_MB", "512"),
+            os.getenv("Fries_UPLOADS_MAX_AGE_DAYS", "30"),
+            os.getenv("Fries_UPLOADS_MAX_TOTAL_MB", "512"),
         )
 
 

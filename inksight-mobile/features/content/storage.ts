@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { TodayItem, TodayPayload } from '@/features/content/api';
 
-const TODAY_CACHE_KEY = 'inksight.content.today';
-const FAVORITES_KEY = 'inksight.content.favorites';
-const HISTORY_KEY = 'inksight.content.history';
+const TODAY_CACHE_KEY = 'Fries.content.today';
+const FAVORITES_KEY = 'Fries.content.favorites';
+const HISTORY_KEY = 'Fries.content.history';
 const TODAY_CACHE_TTL_MS = 30 * 60 * 1000;
 
 type TimedPayload<T> = {

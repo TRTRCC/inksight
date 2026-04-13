@@ -124,7 +124,7 @@ export default function FlashPage() {
   const [flashProgress, setFlashProgress] = useState<number>(0);
   const [serialSupported, setSerialSupported] = useState<boolean | null>(null);
   const [logs, setLogs] = useState<string[]>([
-    isEn ? "[system] InkSight Web Flasher ready" : "[系统] InkSight Web Flasher 已就绪",
+    isEn ? "[system] Fries Web Flasher ready" : "[系统] Fries Web Flasher 已就绪",
     isEn ? "[tip] Use Chrome or Edge for best compatibility" : "[提示] 请使用 Chrome 或 Edge 浏览器以获得最佳体验",
     isEn ? "[tip] Ensure ESP32 USB driver is installed" : "[提示] 确保已安装 ESP32 USB 驱动程序",
   ]);
@@ -465,7 +465,7 @@ export default function FlashPage() {
         <p className="text-ink-light max-w-lg mx-auto">
           {isEn
             ? "No extra software required. Flash the latest firmware directly in your browser."
-            : "无需安装任何软件，直接在浏览器中为你的 InkSight 设备烧录最新固件。"}
+            : "无需安装任何软件，直接在浏览器中为你的 Fries 设备烧录最新固件。"}
           <br />
           {isEn ? "Powered by WebSerial API, works with Chrome and Edge." : "基于 WebSerial API，支持 Chrome 和 Edge 浏览器。"}
         </p>
@@ -580,7 +580,7 @@ export default function FlashPage() {
                 <div>
                   <input
                     className="w-full rounded-sm border border-ink/20 px-3 py-2 text-sm text-ink bg-white"
-                    placeholder="https://.../inksight-firmware-v1.2.3.bin"
+                    placeholder="https://.../Fries-firmware-v1.2.3.bin"
                     value={manualFirmwareUrl}
                     onChange={(e) => {
                       setManualFirmwareUrl(e.target.value.trim());
@@ -732,7 +732,7 @@ export default function FlashPage() {
                 </h3>
                 <ol className="space-y-2 text-sm text-green-700 list-decimal list-inside">
                   <li>断开 USB，给设备上电</li>
-                  <li>在手机/电脑 WiFi 列表中找到 <code className="bg-white px-1.5 py-0.5 rounded text-xs font-mono">InkSight-XXXX</code> 热点并连接</li>
+                  <li>在手机/电脑 WiFi 列表中找到 <code className="bg-white px-1.5 py-0.5 rounded text-xs font-mono">Fries-XXXX</code> 热点并连接</li>
                   <li>浏览器会自动弹出配网页面（如未弹出，手动访问 <code className="bg-white px-1.5 py-0.5 rounded text-xs font-mono">192.168.4.1</code>）</li>
                   <li>在配网页面输入 WiFi 和服务器地址后保存</li>
                   <li>保存成功后，配网页面底部会显示<strong>「打开配置页面」</strong>链接（已带设备标识），点击即可进行个性化配置</li>
@@ -790,7 +790,7 @@ export default function FlashPage() {
                 </li>
                 <li className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-ink text-white text-xs flex items-center justify-center font-medium">2</span>
-                  <span>在 WiFi 列表中找到 <code className="bg-paper-dark px-1.5 py-0.5 rounded text-xs font-mono">InkSight-XXXX</code> 热点并连接</span>
+                  <span>在 WiFi 列表中找到 <code className="bg-paper-dark px-1.5 py-0.5 rounded text-xs font-mono">Fries-XXXX</code> 热点并连接</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-ink text-white text-xs flex items-center justify-center font-medium">3</span>

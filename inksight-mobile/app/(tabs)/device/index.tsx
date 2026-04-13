@@ -114,7 +114,7 @@ export default function DeviceScreen() {
       {token && devices.length === 0 && !query.isLoading ? (
         <InkCard>
           <InkText style={styles.sectionTitle}>{tf(t, 'device.noDevices', 'No devices')}</InkText>
-          <InkText dimmed style={styles.heroBody}>{tf(t, 'device.noDevicesDesc', 'Bind your first InkSight device to get started.')}</InkText>
+          <InkText dimmed style={styles.heroBody}>{tf(t, 'device.noDevicesDesc', 'Bind your first Fries device to get started.')}</InkText>
         </InkCard>
       ) : null}
 

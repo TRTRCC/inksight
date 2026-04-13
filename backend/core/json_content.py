@@ -26,13 +26,13 @@ from .errors import LLMKeyMissingError
 logger = logging.getLogger(__name__)
 
 # Experiment switches
-DISABLE_FALLBACK = os.environ.get("INKSIGHT_DISABLE_FALLBACK", "").strip().lower() in ("1", "true", "yes")
-DISABLE_DEDUP = os.environ.get("INKSIGHT_DISABLE_DEDUP", "").strip().lower() in ("1", "true", "yes")
+DISABLE_FALLBACK = os.environ.get("Fries_DISABLE_FALLBACK", "").strip().lower() in ("1", "true", "yes")
+DISABLE_DEDUP = os.environ.get("Fries_DISABLE_DEDUP", "").strip().lower() in ("1", "true", "yes")
 
 if DISABLE_FALLBACK:
-    logger.warning("[EXP] Fallback is DISABLED via INKSIGHT_DISABLE_FALLBACK")
+    logger.warning("[EXP] Fallback is DISABLED via Fries_DISABLE_FALLBACK")
 if DISABLE_DEDUP:
-    logger.warning("[EXP] Deduplication is DISABLED via INKSIGHT_DISABLE_DEDUP")
+    logger.warning("[EXP] Deduplication is DISABLED via Fries_DISABLE_DEDUP")
 
 DEDUP_MAX_RETRIES = 2
 

@@ -2,7 +2,11 @@
 // https://github.com/datascale-ai/inksight
 
 #include <Arduino.h>
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#else
 #include <WiFi.h>
+#endif
 
 #include "config.h"
 #include "epd_driver.h"
@@ -114,7 +118,7 @@ static void ledFeedback(const char *pattern) {
 
 static void enterPortalMode() {
     String mac = WiFi.macAddress();
-    String apName = "InkSight-" + mac.substring(mac.length() - 5);
+    String apName = "Fries-" + mac.substring(mac.length() - 5);
     apName.replace(":", "");
 
     ctx.liveMode = false;
@@ -139,7 +143,7 @@ static void enterPortalMode() {
 void setup() {
     Serial.begin(115200);
     delay(3000);
-    Serial.println("\n=== InkSight ===");
+    Serial.println("\n=== Fries ===");
 
     gpioInit();
     ledInit();
@@ -403,8 +407,12 @@ static void enterDeepSleep(int minutes) {
     epdSleep();
     Serial.printf("Deep sleep for %d min (~%duA)\n", minutes, 5);
     Serial.flush();
+#ifdef ESP8266
+    ESP.deepSleep((uint64_t)minutes * 60ULL * 1000000ULL);
+#else
     esp_sleep_enable_timer_wakeup((uint64_t)minutes * 60ULL * 1000000ULL);
     esp_deep_sleep_start();
+#endif
 }
 
 // ── Failure handler with retry logic ────────────────────────
@@ -468,8 +476,12 @@ static void handleFailure(const char *reason) {
             ctx.setupDoneAt = millis();
             return;
         }
+#ifdef ESP8266
+        ESP.deepSleep((uint64_t)cfgSleepMin * 60ULL * 1000000ULL);
+#else
         esp_sleep_enable_timer_wakeup((uint64_t)cfgSleepMin * 60ULL * 1000000ULL);
         esp_deep_sleep_start();
+#endif
     }
 }
 

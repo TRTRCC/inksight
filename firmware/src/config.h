@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_CONFIG_H
-#define INKSIGHT_CONFIG_H
+#ifndef Fries_CONFIG_H
+#define Fries_CONFIG_H
 
 #include <Arduino.h>
 
@@ -23,6 +23,17 @@
 #define PIN_BAT_ADC    35
 #define PIN_CFG_BTN    0
 #define PIN_LED        2
+#elif defined(ESP8266)
+// ESP8266 NodeMCU/ESP12e pin mapping
+#define PIN_EPD_MOSI   13  // D7
+#define PIN_EPD_SCK    14  // D5
+#define PIN_EPD_CS     15  // D8
+#define PIN_EPD_DC     4   // D2
+#define PIN_EPD_RST    5   // D1
+#define PIN_EPD_BUSY   16  // D0
+#define PIN_BAT_ADC    A0
+#define PIN_CFG_BTN    0   // D3 (Flash button)
+#define PIN_LED        2   // D4 (Built-in LED)
 #else
 #error "Unsupported board profile"
 #endif
@@ -64,7 +75,7 @@ extern bool useColorBuf;
 static const int FULL_REFRESH_INTERVAL = 10;  // Full refresh every N updates to clear ghosting
 
 // ── Config defaults ─────────────────────────────────────────
-static const char *DEFAULT_SERVER  = "";  // Must be set via captive portal
+static const char *DEFAULT_SERVER  = "http://ink.993636.xyz";  // Default server for ESP8266
 static const int   WIFI_TIMEOUT    = 15000;   // ms
 static const int   HTTP_TIMEOUT    = 30000;   // ms
 static const int   CFG_BTN_HOLD_MS = 2000;    // Long press duration to trigger config mode
@@ -95,4 +106,4 @@ static const int DEBUG_REFRESH_MIN = 1;  // 1 minute for debugging
 #define TIME_TEXT_X   (W * 1 / 100)
 #define TIME_TEXT_Y   (H * 4 / 100)
 
-#endif // INKSIGHT_CONFIG_H
+#endif // Fries_CONFIG_H

@@ -1,5 +1,5 @@
 """
-Shared pytest fixtures for InkSight unit tests.
+Shared pytest fixtures for Fries unit tests.
 """
 import os
 import sys

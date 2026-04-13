@@ -1,6 +1,6 @@
 const DEFAULT_API_BASE = 'http://127.0.0.1:8080/api';
-const EXPO_PUBLIC_INKSIGHT_API_BASE = process.env.EXPO_PUBLIC_INKSIGHT_API_BASE;
-const EXPO_PUBLIC_INKSIGHT_BACKEND_API_BASE = process.env.EXPO_PUBLIC_INKSIGHT_BACKEND_API_BASE;
+const EXPO_PUBLIC_Fries_API_BASE = process.env.EXPO_PUBLIC_Fries_API_BASE;
+const EXPO_PUBLIC_Fries_BACKEND_API_BASE = process.env.EXPO_PUBLIC_Fries_BACKEND_API_BASE;
 
 type ApiFetchOptions = {
   method?: string;
@@ -26,7 +26,7 @@ function ensureApiSuffix(value: string) {
 }
 
 function resolveApiBase() {
-  for (const value of [EXPO_PUBLIC_INKSIGHT_API_BASE, EXPO_PUBLIC_INKSIGHT_BACKEND_API_BASE]) {
+  for (const value of [EXPO_PUBLIC_Fries_API_BASE, EXPO_PUBLIC_Fries_BACKEND_API_BASE]) {
     if (typeof value === 'string' && value.trim()) {
       return ensureApiSuffix(value);
     }
@@ -34,7 +34,7 @@ function resolveApiBase() {
   return stripTrailingSlash(DEFAULT_API_BASE);
 }
 
-/** Expo Web 走浏览器 fetch，会受 CORS 限制，需在后端配置 INKSIGHT_CORS_ALLOW_LAN 或 INKSIGHT_CORS_ORIGINS；原生无此限制。 */
+/** Expo Web 走浏览器 fetch，会受 CORS 限制，需在后端配置 Fries_CORS_ALLOW_LAN 或 Fries_CORS_ORIGINS；原生无此限制。 */
 export function buildApiUrl(path: string) {
   if (/^https?:\/\//i.test(path)) {
     return path;

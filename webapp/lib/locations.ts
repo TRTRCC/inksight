@@ -23,8 +23,8 @@ export interface LocationOption extends LocationValue {
   display_name: string;
 }
 
-const RECENT_LOCATIONS_STORAGE_KEY = "inksight:recent-locations:v2";
-const LOCATION_QUERY_CACHE_STORAGE_KEY = "inksight:location-query-cache:v2";
+const RECENT_LOCATIONS_STORAGE_KEY = "Fries:recent-locations:v2";
+const LOCATION_QUERY_CACHE_STORAGE_KEY = "Fries:location-query-cache:v2";
 const MAX_RECENT_LOCATIONS = 8;
 const MAX_QUERY_CACHE_ITEMS = 24;
 const LOCATION_QUERY_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7;

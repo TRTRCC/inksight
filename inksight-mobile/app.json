@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "inksight",
-    "slug": "inksight-mobile",
+    "name": "Fries",
+    "slug": "Fries-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/inksight-app-icon.png",
-    "scheme": "inksightmobile",
+    "icon": "./assets/images/Fries-app-icon.png",
+    "scheme": "Friesmobile",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash-icon.png",
@@ -14,17 +14,17 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.inksight-mobile"
+      "bundleIdentifier": "com.anonymous.Fries-mobile"
     },
     "android": {
       "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/inksight-app-icon.png",
-        "monochromeImage": "./assets/images/inksight-app-icon.png"
+        "foregroundImage": "./assets/images/Fries-app-icon.png",
+        "monochromeImage": "./assets/images/Fries-app-icon.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.inksightmobile"
+      "package": "com.anonymous.Friesmobile"
     },
     "web": {
       "bundler": "metro",

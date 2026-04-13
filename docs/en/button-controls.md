@@ -2,7 +2,7 @@
 
 On the recommended ESP32-C3 development boards (like the Pro mini), there are typically two physical buttons: **RST (Reset)** and **BOOT (Config)**.
 
-The InkSight firmware uses these two buttons to handle device reboots, mode switching, and Wi-Fi provisioning.
+The Fries firmware uses these two buttons to handle device reboots, mode switching, and Wi-Fi provisioning.
 
 ## 1. RST Button (Hardware Reset)
 
@@ -12,7 +12,7 @@ The InkSight firmware uses these two buttons to handle device reboots, mode swit
 
 ## 2. BOOT Button (Config Button)
 
-In the InkSight firmware, the BOOT button is defined as the primary interaction button (mapped to `BUTTON_PIN` in code, usually GPIO9).
+In the Fries firmware, the BOOT button is defined as the primary interaction button (mapped to `BUTTON_PIN` in code, usually GPIO9).
 
 ### Short Press (Single Click)
 

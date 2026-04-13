@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-The InkSight backend handles device rendering, previews, configuration storage, device state, statistics, firmware info, and user-device binding.
+The Fries backend handles device rendering, previews, configuration storage, device state, statistics, firmware info, and user-device binding.
 
 ### Authentication
 

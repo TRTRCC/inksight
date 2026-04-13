@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const backendBaseEnv = process.env.INKSIGHT_BACKEND_API_BASE?.replace(/\/$/, "") || "";
+const backendBaseEnv = process.env.Fries_BACKEND_API_BASE?.replace(/\/$/, "") || "";
 const backendTargets = backendBaseEnv
   ? [backendBaseEnv]
   : ["http://127.0.0.1:8080", "http://127.0.0.1:8000"];

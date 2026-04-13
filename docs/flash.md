@@ -1,6 +1,6 @@
 # Web 在线刷机
 
-InkSight 提供基于浏览器的在线刷机能力，适合绝大多数用户。
+Fries 提供基于浏览器的在线刷机能力，适合绝大多数用户。
 
 ![在线刷机页面截图](/images/docs/flash-zh.png)
 
@@ -32,7 +32,7 @@ WebApp 会通过以下接口获取固件版本信息：
 - `GET /api/firmware/releases/latest`
 - `GET /api/firmware/validate-url?url=...`
 
-当未配置 `NEXT_PUBLIC_FIRMWARE_API_BASE` 时，前端默认走同域 API Route 代理到 `INKSIGHT_BACKEND_API_BASE`。
+当未配置 `NEXT_PUBLIC_FIRMWARE_API_BASE` 时，前端默认走同域 API Route 代理到 `Fries_BACKEND_API_BASE`。
 
 ## 4. 故障排查
 

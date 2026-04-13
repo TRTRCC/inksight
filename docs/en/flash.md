@@ -1,6 +1,6 @@
 # Web Flasher
 
-InkSight provides browser-based firmware flashing for most users.
+Fries provides browser-based firmware flashing for most users.
 
 ![Web flasher screenshot](/images/docs/flash-en.png)
 
@@ -8,7 +8,7 @@ The current flasher page shows the step-by-step guide, firmware source selector,
 
 ## Video Tutorial
 
-- Flashing walkthrough: [`Bilibili: InkSight Web Flasher demo`](https://www.bilibili.com/video/BV1aWcQzQE3r/?spm_id_from=333.1387.homepage.video_card.click&vd_source=166ea338ef8c38d7904da906b88ef0b7)
+- Flashing walkthrough: [`Bilibili: Fries Web Flasher demo`](https://www.bilibili.com/video/BV1aWcQzQE3r/?spm_id_from=333.1387.homepage.video_card.click&vd_source=166ea338ef8c38d7904da906b88ef0b7)
 
 ## 1. Requirements
 
@@ -32,7 +32,7 @@ The WebApp fetches firmware release info via:
 - `GET /api/firmware/releases/latest`
 - `GET /api/firmware/validate-url?url=...`
 
-If `NEXT_PUBLIC_FIRMWARE_API_BASE` is not set, the frontend defaults to using the same-origin API Route proxy to `INKSIGHT_BACKEND_API_BASE`.
+If `NEXT_PUBLIC_FIRMWARE_API_BASE` is not set, the frontend defaults to using the same-origin API Route proxy to `Fries_BACKEND_API_BASE`.
 
 ## 4. Troubleshooting
 

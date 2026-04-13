@@ -18,7 +18,7 @@ test("POST forwards upload to backend and preserves public host", async () => {
       JSON.stringify({
         ok: true,
         id: "abc",
-        url: "https://www.inksight.site/api/uploads/abc",
+        url: "https://www.www.993636.xyz/api/uploads/abc",
       }),
       {
         status: 200,
@@ -32,7 +32,7 @@ test("POST forwards upload to backend and preserves public host", async () => {
     body: form,
     headers: {
       host: "localhost:3000",
-      "x-forwarded-host": "www.inksight.site",
+      "x-forwarded-host": "www.www.993636.xyz",
       "x-forwarded-proto": "https",
     },
   });
@@ -44,10 +44,10 @@ test("POST forwards upload to backend and preserves public host", async () => {
     assert.equal(res.status, 200);
     assert.equal(calledUrl, "http://127.0.0.1:8080/api/uploads");
     assert.equal(calledInit?.method, "POST");
-    assert.equal((calledInit?.headers as Record<string, string>)["x-forwarded-host"], "www.inksight.site");
+    assert.equal((calledInit?.headers as Record<string, string>)["x-forwarded-host"], "www.www.993636.xyz");
     assert.equal((calledInit?.headers as Record<string, string>)["x-forwarded-proto"], "https");
     assert.equal((calledInit?.headers as Record<string, string>)["x-upload-content-type"], "image/png");
-    assert.match(String(data.url), /^https:\/\/www\.inksight\.site\/api\/uploads\/.+$/);
+    assert.match(String(data.url), /^https:\/\/www\.Fries\.site\/api\/uploads\/.+$/);
   } finally {
     globalThis.fetch = originalFetch;
   }

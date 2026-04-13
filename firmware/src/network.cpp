@@ -3,9 +3,17 @@
 #include "storage.h"
 #include "certs.h"
 
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#else
 #include <WiFi.h>
+#endif
 #include <WiFiClientSecure.h>
+#ifdef ESP8266
+#include <ESP8266HTTPClient.h>
+#else
 #include <HTTPClient.h>
+#endif
 #include <time.h>
 
 // ── Time state ──────────────────────────────────────────────
@@ -160,7 +168,17 @@ static bool readExact(WiFiClient *s, uint8_t *buf, int len) {
 
 static bool beginHttpForUrl(HTTPClient &http, WiFiClient &plainClient, WiFiClientSecure &secClient, const String &url) {
     if (url.startsWith("https://")) {
-        secClient.setCACert(ROOT_CA);
+#ifdef ESP8266
+        // ESP8266/BearSSL: skip certificate validation (insecure mode)
+        secClient.setInsecure();
+#else
+        // ESP32: use CA certificate for validation
+        #ifdef ESP8266
+            secClient.setInsecure();
+#else
+            secClient.setCACert(ROOT_CA);
+#endif
+#endif
         return http.begin(secClient, url);
     }
     return http.begin(plainClient, url);
@@ -293,7 +311,11 @@ bool fetchConfigFlags(bool *outFocusEnabled, bool *outAlwaysActive) {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);
@@ -346,7 +368,11 @@ bool fetchFocusAlertBMP() {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);
@@ -434,7 +460,11 @@ bool fetchBMP(bool nextMode, bool *isFallback) {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);
@@ -552,7 +582,11 @@ bool hasPendingRemoteAction(bool *shouldExitLive) {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);
@@ -618,7 +652,11 @@ void postConfigToBackend() {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);
@@ -651,7 +689,11 @@ bool postRuntimeMode(const char *mode) {
         WiFiClientSecure secClient;
         HTTPClient http;
         if (useSSL) {
+            #ifdef ESP8266
+            secClient.setInsecure();
+#else
             secClient.setCACert(ROOT_CA);
+#endif
             http.begin(secClient, url);
         } else {
             http.begin(plainClient, url);

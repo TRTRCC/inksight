@@ -1,4 +1,4 @@
-# Inksight Alert External Skill
+# Fries Alert External Skill
 
 This package is a decoupled external skill for Co-Claw/OpenClaw deployments.
 It can be copied into another project with minimal integration effort.
@@ -30,8 +30,8 @@ This allows deployment without changing core planner/channel code.
 
 ## Required Env Vars
 
-- `INKSIGHT_BASE_URL`
-- `INKSIGHT_ALERT_TOKEN_MAP` or `INKSIGHT_ALERT_TOKEN`
+- `Fries_BASE_URL`
+- `Fries_ALERT_TOKEN_MAP` or `Fries_ALERT_TOKEN`
 
 ## Optional Env Vars
 

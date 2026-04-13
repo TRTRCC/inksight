@@ -182,7 +182,7 @@ export function buildStaticModeDefinition(input: {
 }): CustomModeDefinition {
   const modeId = input.modeId.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_') || 'CUSTOM_MODE';
   const displayName = input.displayName.trim() || modeId;
-  const description = input.description.trim() || 'Created from InkSight mobile editor';
+  const description = input.description.trim() || 'Created from Fries mobile editor';
   const text = input.text.trim() || 'Stay with one thing.';
 
   return {

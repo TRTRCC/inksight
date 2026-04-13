@@ -33,7 +33,7 @@
     ],
     "footer": {
       "label": "ROAST",
-      "attribution_template": "— InkSight AI",
+      "attribution_template": "— Fries AI",
       "line_width": 2
     }
   },
@@ -49,7 +49,7 @@
           "vertical_center": true
         }
       ],
-      "footer": { "label": "ROAST", "attribution_template": "— InkSight AI", "height": 18, "line_width": 2 }
+      "footer": { "label": "ROAST", "attribution_template": "— Fries AI", "height": 18, "line_width": 2 }
     },
     "800x480": {
       "body": [

@@ -1,6 +1,6 @@
 """
 AI 模式生成器
-根据用户自然语言描述（和可选的参考图片）生成 InkSight 模式 JSON 定义
+根据用户自然语言描述（和可选的参考图片）生成 Fries 模式 JSON 定义
 """
 from __future__ import annotations
 
@@ -82,9 +82,9 @@ _STOIC_EXAMPLE = """{
 
 def _build_generation_prompt(description: str) -> str:
     """Build the meta-prompt that teaches the LLM to produce valid mode JSON."""
-    return f"""你是 InkSight 模式设计助手。InkSight 是一个墨水屏桌面伴侣，屏幕 400x300 像素，1位黑白显示。
+    return f"""你是 Fries 模式设计助手。Fries 是一个墨水屏桌面伴侣，屏幕 400x300 像素，1位黑白显示。
 
-你的任务是根据用户描述，生成一个完整有效的 InkSight 模式 JSON 定义。
+你的任务是根据用户描述，生成一个完整有效的 Fries 模式 JSON 定义。
 
 ## 模式 JSON 结构规范
 

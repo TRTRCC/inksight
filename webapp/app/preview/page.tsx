@@ -349,7 +349,7 @@ export default function ExperiencePage() {
       }
 
       const res = await fetch(`/api/preview?${params.toString()}`, {
-        headers: authHeaders(userLlmApiKey ? { "x-inksight-llm-api-key": userLlmApiKey } : undefined),
+        headers: authHeaders(userLlmApiKey ? { "x-Fries-llm-api-key": userLlmApiKey } : undefined),
       });
       if (res.status === 402) {
         // 额度耗尽，显示邀请码输入弹窗
@@ -735,7 +735,7 @@ export default function ExperiencePage() {
                     <div className="relative w-full max-w-md aspect-[4/3] bg-white border border-ink/20 rounded-sm overflow-hidden">
                       <Image
                         src={previewImageUrl}
-                        alt={t(locale, "preview.display.alt", "InkSight preview")}
+                        alt={t(locale, "preview.display.alt", "Fries preview")}
                         fill
                         className="object-contain"
                         unoptimized

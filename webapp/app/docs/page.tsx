@@ -22,7 +22,7 @@ export default async function DocsPage() {
           </div>
         </div>
         <blockquote>
-          InkSight is a calm e-ink desk companion. Start with the recommended hardware, flash the firmware, connect Wi-Fi,
+          Fries is a calm e-ink desk companion. Start with the recommended hardware, flash the firmware, connect Wi-Fi,
           then configure content from the web app.
         </blockquote>
         <p>
@@ -78,7 +78,7 @@ export default async function DocsPage() {
         </div>
       </div>
       <blockquote>
-        InkSight 是一块适合放在桌面的电子墨水信息屏。先准备推荐硬件，完成刷机与配网，再通过 WebApp 配置内容即可。
+        Fries 是一块适合放在桌面的电子墨水信息屏。先准备推荐硬件，完成刷机与配网，再通过 WebApp 配置内容即可。
       </blockquote>
       <p>
         如果你现在更关心“官网能做什么、应该从哪里开始”，建议先读<strong>网站使用指南</strong>。它会按真实入口带你走一遍

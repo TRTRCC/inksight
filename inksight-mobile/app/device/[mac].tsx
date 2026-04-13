@@ -209,7 +209,7 @@ export default function DeviceDetailScreen() {
       await shareRemoteImage({
         url: shareUrl,
         token,
-        filename: `inksight-${mac.replace(/:/g, '-')}.png`,
+        filename: `Fries-${mac.replace(/:/g, '-')}.png`,
         fallbackMessage: shareUrl,
       });
     } catch (error) {

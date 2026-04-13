@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin-login/page": "/admin-login",
+  "/config/page": "/config",
+  "/dashboard/page": "/dashboard",
+  "/devices/page": "/devices",
+  "/firmware/page": "/firmware",
+  "/groups/page": "/groups",
+  "/logs/page": "/logs",
+  "/openwrt/page": "/openwrt",
+  "/page": "/",
+  "/security/page": "/security",
+  "/users/page": "/users"
+}

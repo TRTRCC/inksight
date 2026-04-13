@@ -28,7 +28,7 @@ from .config import (
     DEFAULT_REFRESH_INTERVAL,
 )
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "inksight.db")
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "Fries.db")
 
 
 async def init_db():

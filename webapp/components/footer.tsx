@@ -18,7 +18,7 @@ export function Footer() {
                 {locale === "en" ? "I" : "墨"}
               </div>
               <span className="text-base font-semibold text-ink tracking-tight">
-                {locale === "en" ? "InkSight" : "墨鱼InkSight"}
+                {locale === "en" ? "Fries" : "墨鱼Fries"}
               </span>
             </div>
             <p className="text-sm text-ink-light leading-relaxed">
@@ -32,7 +32,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-ink-light">
               <li>
                 <a
-                  href="https://github.com/datascale-ai/inksight"
+                  href="https://github.com/datascale-ai/Fries"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-ink transition-colors inline-flex items-center gap-1.5"
@@ -43,7 +43,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/datascale-ai/inksight/blob/main/docs/hardware.md"
+                  href="https://github.com/datascale-ai/Fries/blob/main/docs/hardware.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-ink transition-colors"
@@ -53,7 +53,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/datascale-ai/inksight/blob/main/docs/api.md"
+                  href="https://github.com/datascale-ai/Fries/blob/main/docs/api.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-ink transition-colors"
@@ -77,7 +77,7 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-ink-light">
-            &copy; {new Date().getFullYear()} {locale === "en" ? "InkSight" : "墨鱼InkSight"}. Released under the MIT License.
+            &copy; {new Date().getFullYear()} {locale === "en" ? "Fries" : "墨鱼Fries"}. Released under the MIT License.
           </p>
           <p className="text-xs text-ink-light">
             {t(locale, "footer.tagline")}

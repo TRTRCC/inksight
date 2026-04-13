@@ -1,6 +1,6 @@
 # 本地部署与自托管
 
-本文档用于说明如何在本地启动 InkSight 的后端与 WebApp，并说明当前代码中的关键环境变量与验证方式。
+本文档用于说明如何在本地启动 Fries 的后端与 WebApp，并说明当前代码中的关键环境变量与验证方式。
 如果你只是想了解产品本身，请先看仓库根目录的 `README.md`。
 这篇更适合 **开发者、想自托管的用户、以及需要联调前后端与设备流程的人**。
 
@@ -85,7 +85,7 @@ npm run dev
 
 当前主要变量：
 
-- `INKSIGHT_BACKEND_API_BASE=http://127.0.0.1:8080`
+- `Fries_BACKEND_API_BASE=http://127.0.0.1:8080`
 - `NEXT_PUBLIC_FIRMWARE_API_BASE=`（可选）
 
 建议本地开发时保持：
@@ -95,12 +95,12 @@ npm run dev
 
 ## 6 移动端（Expo）启动
 
-移动端工程位于：`inksight-mobile/`，使用 Expo（`expo-router`）开发。
+移动端工程位于：`Fries-mobile/`，使用 Expo（`expo-router`）开发。
 
 ### 安装依赖
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npm install
 ```
 
@@ -109,28 +109,28 @@ npm install
 - 启动开发模式（Metro）：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npm run start
 ```
 
 - 启动 Web（浏览器）：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npm run web
 ```
 
 - 启动 Android（需要本机 Android 环境/设备）：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npm run android
 ```
 
 - 启动 iOS（需要 macOS/Xcode）：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npm run ios
 ```
 
@@ -139,14 +139,14 @@ npm run ios
 - 指定 dev server 端口（避免与后端端口混淆/冲突）：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npx expo start --port 19006
 ```
 
 - Web 模式下同样指定端口：
 
 ```bash
-cd inksight-mobile
+cd Fries-mobile
 npx expo start --web --port 19006
 ```
 
@@ -154,11 +154,11 @@ npx expo start --web --port 19006
 
 移动端的 `.env` 中常用：
 
-- `EXPO_PUBLIC_INKSIGHT_API_BASE`: **移动端请求后端 API 的基地址**（代码会自动补上 `/api` 后缀）。
+- `EXPO_PUBLIC_Fries_API_BASE`: **移动端请求后端 API 的基地址**（代码会自动补上 `/api` 后缀）。
 
 说明：
 
-- 该变量只影响移动端向后端发起的 HTTP 请求（例如 `${EXPO_PUBLIC_INKSIGHT_API_BASE}/api/...`）。
+- 该变量只影响移动端向后端发起的 HTTP 请求（例如 `${EXPO_PUBLIC_Fries_API_BASE}/api/...`）。
 - 它**不会决定** Expo/Metro/Web 开发服务监听的端口；Expo dev server 端口由 `expo start` 的 `--port` 控制（默认 8081）。
 
 ## 6. 本地入口
@@ -240,7 +240,7 @@ npx tsc --noEmit
 - 前端默认 `3000`
 - 后端默认 `8080`
 
-如果端口被占用，请修改启动命令中的端口并同步更新 `INKSIGHT_BACKEND_API_BASE`。
+如果端口被占用，请修改启动命令中的端口并同步更新 `Fries_BACKEND_API_BASE`。
 
 ### API 调用失败
 

@@ -10,7 +10,7 @@ from cryptography.fernet import Fernet, InvalidToken
 
 logger = logging.getLogger(__name__)
 
-_FALLBACK_KEY_SEED = "inksight-local-dev-only"
+_FALLBACK_KEY_SEED = "Fries-local-dev-only"
 
 
 def _get_fernet() -> Fernet:

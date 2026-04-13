@@ -241,7 +241,7 @@ function TodayFeedCard({
 
   const sharedActions = {
     onToggleFavorite: handleToggle,
-    onShare: () => shareTodayItem(item, { sourceLabel: tf(t, 'common.fromApp', 'From InkSight') }),
+    onShare: () => shareTodayItem(item, { sourceLabel: tf(t, 'common.fromApp', 'From Fries') }),
     onPush: token ? () => onOpenSheet(item, 'actions') : undefined,
   };
   const itemTitle = deriveItemTitle(item);
@@ -400,7 +400,7 @@ export default function TodayScreen() {
   async function handleSheetShare() {
     if (!activeItem) return;
     await lightImpact();
-    await shareTodayItem(activeItem, { sourceLabel: tf(t, 'common.fromApp', 'From InkSight') });
+    await shareTodayItem(activeItem, { sourceLabel: tf(t, 'common.fromApp', 'From Fries') });
   }
 
   async function handleSheetCopy() {

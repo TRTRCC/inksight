@@ -26,7 +26,7 @@ function getResolvedPlatform() {
 }
 
 function buildPreviewToken() {
-  return `inksight-${getResolvedPlatform()}-${Date.now()}`;
+  return `Fries-${getResolvedPlatform()}-${Date.now()}`;
 }
 
 export async function registerPushNotifications(token: string, pushTime: string) {

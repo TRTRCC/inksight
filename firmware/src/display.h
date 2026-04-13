@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_DISPLAY_H
-#define INKSIGHT_DISPLAY_H
+#ifndef Fries_DISPLAY_H
+#define Fries_DISPLAY_H
 
 #include <Arduino.h>
 
@@ -28,4 +28,4 @@ void smartDisplay(const uint8_t *image);
 // Show mode name preview screen (displayed briefly on double-click before loading)
 void showModePreview(const char *modeName);
 
-#endif // INKSIGHT_DISPLAY_H
+#endif // Fries_DISPLAY_H

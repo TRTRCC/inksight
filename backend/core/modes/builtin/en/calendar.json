@@ -74,6 +74,6 @@
       { "type": "separator", "style": "dashed", "margin_x": 10 },
       { "type": "text", "field": "text", "font_size": 13, "align": "center", "max_lines": 1 }
     ],
-    "footer": { "label": "CALENDAR", "attribution_template": "— InkSight" }
+    "footer": { "label": "CALENDAR", "attribution_template": "— Fries" }
   }
 }

@@ -1,13 +1,13 @@
 ﻿---
-name: send_to_inksight_focus_mode
-description: 仅在高优先级 QQ 紧急升级场景下使用此技能。它会在严格策略校验通过后，将关键告警推送到 Inksight 墨水屏的专注模式。
+name: send_to_Fries_focus_mode
+description: 仅在高优先级 QQ 紧急升级场景下使用此技能。它会在严格策略校验通过后，将关键告警推送到 Fries 墨水屏的专注模式。
 ---
 
-# Inksight 专注告警技能
+# Fries 专注告警技能
 
 ## 用途
 
-此技能用于将紧急告警推送到 Inksight 设备的专注模式。
+此技能用于将紧急告警推送到 Fries 设备的专注模式。
 
 ## 严格触发策略
 

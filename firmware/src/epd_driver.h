@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_EPD_DRIVER_H
-#define INKSIGHT_EPD_DRIVER_H
+#ifndef Fries_EPD_DRIVER_H
+#define Fries_EPD_DRIVER_H
 
 #include <Arduino.h>
 
@@ -27,4 +27,4 @@ void epdPartialDisplay(uint8_t *data, int xStart, int yStart, int xEnd, int yEnd
 // Put EPD into deep sleep mode
 void epdSleep();
 
-#endif // INKSIGHT_EPD_DRIVER_H
+#endif // Fries_EPD_DRIVER_H

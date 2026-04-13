@@ -1,5 +1,5 @@
 """
-Integration tests for InkSight API -> render pipeline.
+Integration tests for Fries API -> render pipeline.
 Uses httpx.AsyncClient with FastAPI TestClient, mocking LLM calls.
 """
 from __future__ import annotations
@@ -52,7 +52,7 @@ async def client(tmp_path):
         await db.commit()
 
     # Redirect all database paths to temp files
-    test_main_db = str(tmp_path / "test_inksight.db")
+    test_main_db = str(tmp_path / "test_Fries.db")
     test_cache_db = str(tmp_path / "test_cache.db")
 
     with patch.object(db_mod, "_MAIN_DB_PATH", test_main_db), \
@@ -1127,7 +1127,7 @@ async def test_config_page_bridge_and_legacy_page(client):
 
 @pytest.mark.asyncio
 async def test_config_page_redirects_to_primary_webapp_when_configured(client, monkeypatch):
-    monkeypatch.setenv("INKSIGHT_PRIMARY_WEBAPP_URL", "https://app.example.com")
+    monkeypatch.setenv("Fries_PRIMARY_WEBAPP_URL", "https://app.example.com")
     resp = await client.get("/config", params={"mac": "AA:BB:CC:DD:EE:FF"})
     assert resp.status_code == 307
     assert resp.headers["location"] == "https://app.example.com/config?mac=AA:BB:CC:DD:EE:FF"

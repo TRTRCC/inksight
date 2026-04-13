@@ -52,7 +52,7 @@ function WidgetContent() {
       {imgSrc ? (
         <Image
           src={imgSrc}
-          alt="InkSight Widget"
+          alt="Fries Widget"
           width={800}
           height={480}
           unoptimized

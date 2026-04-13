@@ -18,7 +18,7 @@ export default function IndexScreen() {
   if (!hydrated || onboardingSeen === null) {
     return (
       <AppScreen>
-        <InkText serif style={{ fontSize: 28, fontWeight: '600' }}>InkSight</InkText>
+        <InkText serif style={{ fontSize: 28, fontWeight: '600' }}>Fries</InkText>
         <InkText dimmed>{t('app.booting')}</InkText>
       </AppScreen>
     );

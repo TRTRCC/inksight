@@ -45,11 +45,11 @@ def paste_icon_onto(target: Image.Image, icon: Image.Image, pos: tuple[int, int]
 
 _font_warned: set[str] = set()
 _bitmap_warned: set[str] = set()
-_font_engine = os.getenv("INKSIGHT_FONT_ENGINE", "bitmap").strip().lower()
+_font_engine = os.getenv("Fries_FONT_ENGINE", "bitmap").strip().lower()
 _force_bitmap = _font_engine in {"bitmap", "pixel", "pil"}
-_fontmode = os.getenv("INKSIGHT_TEXT_FONTMODE", "1").strip()
+_fontmode = os.getenv("Fries_TEXT_FONTMODE", "1").strip()
 _bitmap_suffix_to_load_size = {9: 12, 10: 13, 11: 15, 12: 16, 13: 14}
-_bitmap_max_request_size = int(os.getenv("INKSIGHT_BITMAP_MAX_REQUEST_SIZE", "16"))
+_bitmap_max_request_size = int(os.getenv("Fries_BITMAP_MAX_REQUEST_SIZE", "16"))
 
 
 def apply_text_fontmode(draw: ImageDraw.ImageDraw) -> None:

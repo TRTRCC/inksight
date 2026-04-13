@@ -140,7 +140,7 @@ except Exception as exc:  # pragma: no cover - depends on optional runtime depen
     limiter = _NoopLimiter()
 
 
-async def inksight_error_handler(request: Request, exc):
+async def Fries_error_handler(request: Request, exc):
     return JSONResponse(
         status_code=exc.status_code,
         content={"error": type(exc).__name__, "message": exc.message},
@@ -148,7 +148,7 @@ async def inksight_error_handler(request: Request, exc):
 
 
 def build_claim_url(request: Request, token: str) -> str:
-    override = os.environ.get("INKSIGHT_WEB_BASE_URL", "").rstrip("/")
+    override = os.environ.get("Fries_WEB_BASE_URL", "").rstrip("/")
     if override:
         return f"{override}/claim?token={token}"
     host = (
@@ -157,7 +157,7 @@ def build_claim_url(request: Request, token: str) -> str:
         or request.url.netloc
         or ""
     ).strip()
-    if "inksight.site" not in host.lower():
+    if "www.993636.xyz" not in host.lower():
         return ""
     scheme = (request.headers.get("x-forwarded-proto") or request.url.scheme or "https").strip()
     return f"{scheme}://{host}/claim?token={token}"
@@ -209,7 +209,7 @@ async def ensure_web_or_device_access(
 FIRMWARE_CHIP_FAMILY = "ESP32-C3"
 FIRMWARE_RELEASE_CACHE_TTL = int(os.getenv("FIRMWARE_RELEASE_CACHE_TTL", "120"))
 GITHUB_OWNER = os.getenv("GITHUB_OWNER", "datascale-ai")
-GITHUB_REPO = os.getenv("GITHUB_REPO", "inksight")
+GITHUB_REPO = os.getenv("GITHUB_REPO", "Fries")
 GITHUB_RELEASES_API = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/releases"
 _firmware_release_cache = {
     "expires_at": 0.0,
@@ -629,7 +629,7 @@ async def build_image(
 
     cache_hit = False
     quota_exhausted = False
-    billing_enabled = os.getenv("INKSIGHT_BILLING_ENABLED", "1").strip().lower() not in (
+    billing_enabled = os.getenv("Fries_BILLING_ENABLED", "1").strip().lower() not in (
         "0",
         "false",
         "no",
@@ -1015,7 +1015,7 @@ def reconnect_threshold_seconds(refresh_minutes: int) -> int:
 
 def build_firmware_manifest(version: str, download_url: str, chip_family: str = FIRMWARE_CHIP_FAMILY) -> dict:
     return {
-        "name": "InkSight",
+        "name": "Fries",
         "version": version,
         "builds": [
             {
@@ -1040,7 +1040,7 @@ def pick_firmware_asset(assets: list[dict]) -> Optional[dict]:
         asset
         for asset in assets
         if asset.get("name", "").endswith(".bin")
-        and "inksight-firmware-" in asset.get("name", "")
+        and "Fries-firmware-" in asset.get("name", "")
     ]
     if preferred:
         return preferred[0]
@@ -1073,7 +1073,7 @@ def expand_firmware_release_assets(release: dict) -> list[dict]:
                 "manifest": build_firmware_manifest(version, download_url, chip_family),
             }
         )
-    preferred = [item for item in items if "inksight-firmware-" in item["asset_name"]]
+    preferred = [item for item in items if "Fries-firmware-" in item["asset_name"]]
     return preferred or items
 
 
@@ -1091,7 +1091,7 @@ async def load_firmware_releases(force_refresh: bool = False) -> dict:
 
         headers = {
             "Accept": "application/vnd.github+json",
-            "User-Agent": "inksight-firmware-api",
+            "User-Agent": "Fries-firmware-api",
         }
         github_token = os.getenv("GITHUB_TOKEN")
         if github_token:
@@ -1222,7 +1222,7 @@ def _render_quota_exhausted_image(screen_w: int, screen_h: int) -> Image.Image:
 def _render_device_unbound_image(screen_w: int, screen_h: int, pair_code: str) -> Image.Image:
     img = Image.new("1", (screen_w, screen_h), 1)
     draw = ImageDraw.Draw(img)
-    title = "欢迎使用 InkSight"
+    title = "欢迎使用 Fries"
     pair_line = f"配对码：{pair_code}" if pair_code else "正在生成配对码..."
     hint = "请在设备配置页输入配对码完成绑定"
     try:

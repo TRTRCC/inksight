@@ -1,12 +1,12 @@
 [English](README.md) | 中文
 
-# 墨鱼 | InkSight
+# 墨鱼 | Fries
 
 > 一块真正适合放在桌面的电子墨水信息屏，并配有一个能一站式完成刷机、配置、预览与发现创意模式的网站。
 
-官网主页：[https://www.inksight.site](https://www.inksight.site)
+官网主页：[https://www.www.993636.xyz](https://www.www.993636.xyz)
 
-![InkSight](images/intro.jpg)
+![Fries](images/intro.jpg)
 
 ## 它为什么特别
 
@@ -71,7 +71,7 @@
 
 如果你想先感受和了解产品，可以直接访问官网去体验：
 
-- 官网：[`inksight.site`](https://www.inksight.site)
+- 官网：[`www.993636.xyz`](https://www.www.993636.xyz)
 - 在线刷机：支持一键拉取我们发布的最新固件代码并部署，教程视频: [`刷机视频教程`](https://www.bilibili.com/video/BV1aWcQzQE3r/?spm_id_from=333.1387.homepage.video_card.click&vd_source=166ea338ef8c38d7904da906b88ef0b7)
 - 设备配置：当刷完设备之后，可以在这里配置显示的内容
 - 模式广场：可以分享自己的大作，也可以用上大神们设计的精美模式

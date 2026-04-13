@@ -1,5 +1,5 @@
-#ifndef INKSIGHT_CERTS_H
-#define INKSIGHT_CERTS_H
+#ifndef Fries_CERTS_H
+#define Fries_CERTS_H
 
 // ISRG Root X1 (Let's Encrypt) — Valid until 2035-06-04
 // Covers most modern HTTPS deployments (Cloudflare, Vercel, Let's Encrypt, etc.)
@@ -37,4 +37,4 @@ emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 -----END CERTIFICATE-----
 )EOF";
 
-#endif // INKSIGHT_CERTS_H
+#endif // Fries_CERTS_H

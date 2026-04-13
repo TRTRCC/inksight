@@ -30,8 +30,8 @@ router = APIRouter(tags=["modes"])
 
 
 def _billing_enabled() -> bool:
-    """全局计费开关：INKSIGHT_BILLING_ENABLED=0 时关闭额度检查与扣费。"""
-    value = os.getenv("INKSIGHT_BILLING_ENABLED", "1").strip().lower()
+    """全局计费开关：Fries_BILLING_ENABLED=0 时关闭额度检查与扣费。"""
+    value = os.getenv("Fries_BILLING_ENABLED", "1").strip().lower()
     return value not in ("0", "false", "no", "off")
 
 

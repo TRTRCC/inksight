@@ -86,8 +86,8 @@ export async function syncLocalDailyNotification(input: {
   const { hour, minute } = parsePushTime(input.pushTime);
   const id = await Notifications.scheduleNotificationAsync({
     content: {
-      title: input.item?.display_name || input.title || 'InkSight Daily Brief',
-      body: input.item?.summary || input.body || 'Open InkSight to see what is worth reading today.',
+      title: input.item?.display_name || input.title || 'Fries Daily Brief',
+      body: input.item?.summary || input.body || 'Open Fries to see what is worth reading today.',
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
