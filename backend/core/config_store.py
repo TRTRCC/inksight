@@ -219,8 +219,11 @@ async def init_db():
                 phone TEXT UNIQUE,
                 email TEXT UNIQUE,
                 role TEXT NOT NULL DEFAULT 'user',
+                status TEXT NOT NULL DEFAULT 'active',
+                email_verified_at TEXT DEFAULT '',
                 invite_code TEXT DEFAULT '',
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                updated_at TEXT DEFAULT ''
             )
         """)
         # Migration: add phone/email columns if missing.
@@ -241,9 +244,24 @@ async def init_db():
         await db.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_phone_unique ON users(phone)")
         await db.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email_unique ON users(email)")
 
-        # Migration: add role column if missing
+        # Migration: add role/status/profile columns if missing
         try:
             await db.execute("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'")
+            await db.commit()
+        except Exception:
+            pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'active'")
+            await db.commit()
+        except Exception:
+            pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN email_verified_at TEXT DEFAULT ''")
+            await db.commit()
+        except Exception:
+            pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN updated_at TEXT DEFAULT ''")
             await db.commit()
         except Exception:
             pass
@@ -425,6 +443,62 @@ async def init_db():
         await db.execute("CREATE INDEX IF NOT EXISTS idx_push_tokens_user ON push_tokens(user_id)")
         await db.execute("CREATE INDEX IF NOT EXISTS idx_push_tokens_token ON push_tokens(push_token)")
 
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS email_verification_codes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT NOT NULL,
+                purpose TEXT NOT NULL,
+                code TEXT NOT NULL,
+                expires_at TEXT NOT NULL,
+                consumed_at TEXT DEFAULT '',
+                created_at TEXT NOT NULL
+            )
+        """)
+        await db.execute("CREATE INDEX IF NOT EXISTS idx_email_codes_lookup ON email_verification_codes(email, purpose, created_at)")
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS smtp_settings (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                host TEXT DEFAULT '',
+                port INTEGER DEFAULT 587,
+                username TEXT DEFAULT '',
+                password_encrypted TEXT DEFAULT '',
+                sender_email TEXT DEFAULT '',
+                sender_name TEXT DEFAULT '',
+                use_tls INTEGER DEFAULT 1,
+                use_ssl INTEGER DEFAULT 0,
+                updated_at TEXT NOT NULL
+            )
+        """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS ai_providers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                key TEXT NOT NULL UNIQUE,
+                base_url TEXT DEFAULT '',
+                api_key_encrypted TEXT DEFAULT '',
+                category TEXT DEFAULT 'llm',
+                enabled INTEGER DEFAULT 1,
+                is_default INTEGER DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+        """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS ai_models (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                provider_id INTEGER NOT NULL,
+                key TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
+                category TEXT DEFAULT 'chat',
+                enabled INTEGER DEFAULT 1,
+                is_default INTEGER DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY (provider_id) REFERENCES ai_providers(id)
+            )
+        """)
+        await db.execute("CREATE INDEX IF NOT EXISTS idx_ai_models_provider ON ai_models(provider_id)")
+
         # Shared modes table for Discover page
         await db.execute("""
             CREATE TABLE IF NOT EXISTS shared_modes (
@@ -571,13 +645,23 @@ async def create_user(
 async def get_user_by_username(username: str) -> dict | None:
     db = await get_main_db()
     cursor = await db.execute(
-        "SELECT id, username, password_hash, created_at FROM users WHERE username = ?",
+        "SELECT id, username, password_hash, created_at, phone, email, role, status, email_verified_at FROM users WHERE username = ?",
         (username.strip(),),
     )
     row = await cursor.fetchone()
     if not row:
         return None
-    return {"id": row[0], "username": row[1], "password_hash": row[2], "created_at": row[3]}
+    return {
+        "id": row[0],
+        "username": row[1],
+        "password_hash": row[2],
+        "created_at": row[3],
+        "phone": row[4] or "",
+        "email": row[5] or "",
+        "role": row[6] or "user",
+        "status": row[7] or "active",
+        "email_verified": bool(row[8]),
+    }
 
 
 def _parse_json_blob(value: str | None, fallback):
@@ -2301,3 +2385,845 @@ async def delete_user_llm_config(user_id: int) -> bool:
         logger.error(f"[USER_LLM_CONFIG] Failed to delete config for user {user_id}: {e}")
         await db.rollback()
         return False
+
+
+# ============================================================================
+# Admin Management Functions
+# ============================================================================
+
+async def get_smtp_settings(mask_secret: bool = False) -> dict:
+    """获取 SMTP 配置。mask_secret=True 时返回密码脱敏。"""
+    db = await get_main_db()
+    await db.execute("""
+        CREATE TABLE IF NOT EXISTS smtp_settings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            host TEXT DEFAULT '',
+            port INTEGER DEFAULT 587,
+            username TEXT DEFAULT '',
+            password_encrypted TEXT DEFAULT '',
+            sender_email TEXT DEFAULT '',
+            sender_name TEXT DEFAULT 'Fries',
+            use_tls INTEGER DEFAULT 1,
+            use_ssl INTEGER DEFAULT 0,
+            updated_at TEXT DEFAULT ''
+        )
+    """)
+    await db.commit()
+    
+    cursor = await db.execute("SELECT * FROM smtp_settings LIMIT 1")
+    row = await cursor.fetchone()
+    
+    if not row:
+        return {
+            "host": "",
+            "port": 587,
+            "username": "",
+            "password_masked": "",
+            "password_set": False,
+            "sender_email": "",
+            "sender_name": "Fries",
+            "use_tls": True,
+            "use_ssl": False,
+        }
+    
+    from .crypto import decrypt_api_key
+    password_encrypted = row[4] or ""
+    password_set = bool(password_encrypted)
+    
+    if mask_secret:
+        # 先解密，再脱敏
+        decrypted = decrypt_api_key(password_encrypted) if password_encrypted else ""
+        password_masked = decrypted[:2] + "..." if decrypted else ""
+    else:
+        password_masked = decrypt_api_key(password_encrypted) if password_encrypted else ""
+    
+    return {
+        "host": row[1] or "",
+        "port": row[2] or 587,
+        "username": row[3] or "",
+        "password_masked": password_masked,
+        "password_set": password_set,
+        "sender_email": row[5] or "",
+        "sender_name": row[6] or "Fries",
+        "use_tls": bool(row[7]),
+        "use_ssl": bool(row[8]),
+    }
+
+
+async def save_smtp_settings(settings: dict) -> dict:
+    """保存 SMTP 配置，密码加密存储。"""
+    from .crypto import encrypt_api_key
+    
+    db = await get_main_db()
+    await db.execute("""
+        CREATE TABLE IF NOT EXISTS smtp_settings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            host TEXT DEFAULT '',
+            port INTEGER DEFAULT 587,
+            username TEXT DEFAULT '',
+            password_encrypted TEXT DEFAULT '',
+            sender_email TEXT DEFAULT '',
+            sender_name TEXT DEFAULT 'Fries',
+            use_tls INTEGER DEFAULT 1,
+            use_ssl INTEGER DEFAULT 0,
+            updated_at TEXT DEFAULT ''
+        )
+    """)
+    await db.commit()
+    
+    host = settings.get("host", "")
+    port = settings.get("port", 587)
+    username = settings.get("username", "")
+    password = settings.get("password", "")
+    sender_email = settings.get("sender_email", "")
+    sender_name = settings.get("sender_name", "Fries")
+    use_tls = settings.get("use_tls", True)
+    use_ssl = settings.get("use_ssl", False)
+    
+    encrypted_password = encrypt_api_key(password) if password else ""
+    now = datetime.now().isoformat()
+    
+    cursor = await db.execute("SELECT id FROM smtp_settings LIMIT 1")
+    existing = await cursor.fetchone()
+    
+    if existing:
+        await db.execute("""
+            UPDATE smtp_settings SET
+                host = ?, port = ?, username = ?, password_encrypted = ?,
+                sender_email = ?, sender_name = ?, use_tls = ?, use_ssl = ?, updated_at = ?
+            WHERE id = ?
+        """, (host, port, username, encrypted_password, sender_email, sender_name, use_tls, use_ssl, now, existing[0]))
+    else:
+        await db.execute("""
+            INSERT INTO smtp_settings (host, port, username, password_encrypted, sender_email, sender_name, use_tls, use_ssl, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (host, port, username, encrypted_password, sender_email, sender_name, use_tls, use_ssl, now))
+    
+    await db.commit()
+    return await get_smtp_settings(mask_secret=True)
+
+
+async def list_users_admin() -> list:
+    """管理员获取所有用户列表。"""
+    db = await get_main_db()
+    cursor = await db.execute("""
+        SELECT u.id, u.username, u.email, u.phone, u.role, u.status, u.created_at, u.email_verified_at,
+               q.free_quota_remaining
+        FROM users u
+        LEFT JOIN api_quotas q ON u.id = q.user_id
+        ORDER BY u.id DESC
+    """)
+    rows = await cursor.fetchall()
+    
+    users = []
+    for row in rows:
+        users.append({
+            "id": row[0],
+            "username": row[1],
+            "email": row[2] or "",
+            "phone": row[3] or "",
+            "role": row[4] or "user",
+            "status": row[5] or "active",
+            "created_at": row[6],
+            "email_verified": bool(row[7]),
+            "free_quota_remaining": row[8] or 0,
+        })
+    return users
+
+
+async def get_user_admin_detail(user_id: int) -> dict | None:
+    """管理员获取单个用户详情（含 quota）。"""
+    db = await get_main_db()
+    cursor = await db.execute("""
+        SELECT id, username, email, phone, role, status, created_at, email_verified_at, updated_at
+        FROM users WHERE id = ?
+    """, (user_id,))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return None
+    
+    user = {
+        "id": row[0],
+        "username": row[1],
+        "email": row[2] or "",
+        "phone": row[3] or "",
+        "role": row[4] or "user",
+        "status": row[5] or "active",
+        "created_at": row[6],
+        "email_verified": bool(row[7]),
+        "updated_at": row[8] or "",
+    }
+    
+    cursor = await db.execute("""
+        SELECT total_calls_made, free_quota_remaining FROM api_quotas WHERE user_id = ?
+    """, (user_id,))
+    quota_row = await cursor.fetchone()
+    
+    quota = {
+        "total_calls_made": quota_row[0] if quota_row else 0,
+        "free_quota_remaining": quota_row[1] if quota_row else 0,
+    }
+    
+    return {"user": user, "quota": quota}
+
+
+async def update_user_admin(user_id: int, updates: dict) -> dict | str | None:
+    """管理员更新用户信息（role, status, quota 等）。"""
+    db = await get_main_db()
+    
+    role = updates.get("role")
+    status = updates.get("status")
+    free_quota = updates.get("free_quota_remaining")
+    username = updates.get("username")
+    email = updates.get("email")
+    
+    now = datetime.now().isoformat()
+    
+    try:
+        if username or email:
+            if username:
+                cursor = await db.execute("SELECT id FROM users WHERE username = ? AND id != ?", (username, user_id))
+                if await cursor.fetchone():
+                    return "conflict"
+            if email:
+                cursor = await db.execute("SELECT id FROM users WHERE email = ? AND id != ?", (email, user_id))
+                if await cursor.fetchone():
+                    return "conflict"
+            
+            await db.execute("""
+                UPDATE users SET username = COALESCE(?, username), email = COALESCE(?, email), updated_at = ?
+                WHERE id = ?
+            """, (username, email, now, user_id))
+        
+        if role:
+            await db.execute("UPDATE users SET role = ?, updated_at = ? WHERE id = ?", (role, now, user_id))
+        if status:
+            await db.execute("UPDATE users SET status = ?, updated_at = ? WHERE id = ?", (status, now, user_id))
+        
+        if free_quota is not None:
+            await db.execute("""
+                INSERT INTO api_quotas (user_id, total_calls_made, free_quota_remaining) VALUES (?, 0, ?)
+                ON CONFLICT(user_id) DO UPDATE SET free_quota_remaining = ?
+            """, (user_id, free_quota, free_quota))
+        
+        await db.commit()
+        return await get_user_admin_detail(user_id)
+    except Exception as e:
+        logger.error(f"[ADMIN] Failed to update user {user_id}: {e}")
+        await db.rollback()
+        return None
+
+
+async def set_user_status(user_id: int, status: str) -> dict | str | None:
+    """管理员设置用户状态（active/disabled）。"""
+    valid_statuses = {"active", "disabled"}
+    if status not in valid_statuses:
+        return "invalid_status"
+    
+    db = await get_main_db()
+    now = datetime.now().isoformat()
+    
+    try:
+        cursor = await db.execute("UPDATE users SET status = ?, updated_at = ? WHERE id = ?", (status, now, user_id))
+        await db.commit()
+        
+        if cursor.rowcount == 0:
+            return None
+        
+        cursor = await db.execute("SELECT id, username, status FROM users WHERE id = ?", (user_id,))
+        row = await cursor.fetchone()
+        return {"id": row[0], "username": row[1], "status": row[2]}
+    except Exception as e:
+        logger.error(f"[ADMIN] Failed to set user status {user_id}: {e}")
+        await db.rollback()
+        return None
+
+
+# ============================================================================
+# AI Provider Management
+# ============================================================================
+
+async def _ensure_ai_tables(db):
+    """确保 AI provider/model 表存在。"""
+    await db.execute("""
+        CREATE TABLE IF NOT EXISTS ai_providers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            key TEXT NOT NULL UNIQUE,
+            base_url TEXT DEFAULT '',
+            api_key_encrypted TEXT DEFAULT '',
+            category TEXT DEFAULT 'llm',
+            enabled INTEGER DEFAULT 1,
+            is_default INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT '',
+            updated_at TEXT DEFAULT ''
+        )
+    """)
+    await db.execute("""
+        CREATE TABLE IF NOT EXISTS ai_models (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            provider_id INTEGER NOT NULL,
+            key TEXT NOT NULL,
+            name TEXT DEFAULT '',
+            category TEXT DEFAULT 'chat',
+            enabled INTEGER DEFAULT 1,
+            is_default INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT '',
+            updated_at TEXT DEFAULT '',
+            FOREIGN KEY (provider_id) REFERENCES ai_providers(id),
+            UNIQUE(provider_id, key)
+        )
+    """)
+    await db.commit()
+
+
+async def list_ai_providers() -> list:
+    """获取所有 AI provider 配置。"""
+    from .crypto import decrypt_api_key
+    
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    cursor = await db.execute("""
+        SELECT id, name, key, base_url, api_key_encrypted, category, enabled, is_default, created_at, updated_at
+        FROM ai_providers ORDER BY id
+    """)
+    rows = await cursor.fetchall()
+    
+    providers = []
+    for row in rows:
+        api_key_encrypted = row[4] or ""
+        # 先解密，再脱敏
+        decrypted = decrypt_api_key(api_key_encrypted) if api_key_encrypted else ""
+        api_key_masked = decrypted[:4] + "..." if len(decrypted) > 4 else ""
+        providers.append({
+            "id": row[0],
+            "name": row[1],
+            "key": row[2],
+            "base_url": row[3] or "",
+            "api_key": "",  # 不返回原始 key
+            "api_key_masked": api_key_masked,
+            "api_key_set": bool(api_key_encrypted),
+            "category": row[5] or "llm",
+            "enabled": bool(row[6]),
+            "is_default": bool(row[7]),
+            "created_at": row[8] or "",
+            "updated_at": row[9] or "",
+        })
+    return providers
+
+
+async def get_ai_provider(provider_id: int) -> dict | None:
+    """获取单个 AI provider 详情。"""
+    from .crypto import decrypt_api_key
+    
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    cursor = await db.execute("""
+        SELECT id, name, key, base_url, api_key_encrypted, category, enabled, is_default, created_at, updated_at
+        FROM ai_providers WHERE id = ?
+    """, (provider_id,))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return None
+    
+    api_key_encrypted = row[4] or ""
+    # 先解密，再脱敏
+    decrypted = decrypt_api_key(api_key_encrypted) if api_key_encrypted else ""
+    api_key_masked = decrypted[:4] + "..." if len(decrypted) > 4 else ""
+    
+    return {
+        "id": row[0],
+        "name": row[1],
+        "key": row[2],
+        "base_url": row[3] or "",
+        "api_key": "",
+        "api_key_masked": api_key_masked,
+        "api_key_set": bool(api_key_encrypted),
+        "category": row[5] or "llm",
+        "enabled": bool(row[6]),
+        "is_default": bool(row[7]),
+        "created_at": row[8] or "",
+        "updated_at": row[9] or "",
+    }
+
+
+async def create_ai_provider(data: dict) -> dict | str:
+    """创建新的 AI provider。"""
+    from .crypto import encrypt_api_key
+    
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    name = data.get("name", "")
+    key = data.get("key", "")
+    base_url = data.get("base_url", "")
+    api_key = data.get("api_key", "")
+    category = data.get("category", "llm")
+    enabled = data.get("enabled", True)
+    is_default = data.get("is_default", False)
+    
+    if not name or not key:
+        return None
+    
+    now = datetime.now().isoformat()
+    encrypted_key = encrypt_api_key(api_key) if api_key else ""
+    
+    try:
+        cursor = await db.execute("""
+            INSERT INTO ai_providers (name, key, base_url, api_key_encrypted, category, enabled, is_default, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (name, key, base_url, encrypted_key, category, enabled, is_default, now, now))
+        await db.commit()
+        
+        return await get_ai_provider(cursor.lastrowid)
+    except Exception as e:
+        if "UNIQUE constraint failed" in str(e):
+            return "conflict"
+        logger.error(f"[ADMIN] Failed to create AI provider: {e}")
+        await db.rollback()
+        return None
+
+
+async def update_ai_provider(provider_id: int, data: dict) -> dict | str | None:
+    """更新 AI provider 配置。"""
+    from .crypto import encrypt_api_key
+    
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    existing = await get_ai_provider(provider_id)
+    if not existing:
+        return None
+    
+    name = data.get("name", existing["name"])
+    key = data.get("key", existing["key"])
+    base_url = data.get("base_url", existing["base_url"])
+    api_key = data.get("api_key", "")
+    category = data.get("category", existing["category"])
+    enabled = data.get("enabled", existing["enabled"])
+    is_default = data.get("is_default", existing["is_default"])
+    
+    now = datetime.now().isoformat()
+    
+    # 如果传入空 api_key，保留原有加密值；否则加密新值
+    encrypted_key = existing.get("api_key_encrypted", "")
+    if api_key:
+        encrypted_key = encrypt_api_key(api_key)
+    
+    try:
+        if key != existing["key"]:
+            cursor = await db.execute("SELECT id FROM ai_providers WHERE key = ? AND id != ?", (key, provider_id))
+            if await cursor.fetchone():
+                return "conflict"
+        
+        await db.execute("""
+            UPDATE ai_providers SET name = ?, key = ?, base_url = ?, api_key_encrypted = ?, category = ?, enabled = ?, is_default = ?, updated_at = ?
+            WHERE id = ?
+        """, (name, key, base_url, encrypted_key, category, enabled, is_default, now, provider_id))
+        await db.commit()
+        
+        return await get_ai_provider(provider_id)
+    except Exception as e:
+        if "UNIQUE constraint failed" in str(e):
+            return "conflict"
+        logger.error(f"[ADMIN] Failed to update AI provider {provider_id}: {e}")
+        await db.rollback()
+        return None
+
+
+async def delete_ai_provider(provider_id: int) -> bool:
+    """删除 AI provider（及其关联 models）。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    try:
+        await db.execute("DELETE FROM ai_models WHERE provider_id = ?", (provider_id,))
+        cursor = await db.execute("DELETE FROM ai_providers WHERE id = ?", (provider_id,))
+        await db.commit()
+        return cursor.rowcount > 0
+    except Exception as e:
+        logger.error(f"[ADMIN] Failed to delete AI provider {provider_id}: {e}")
+        await db.rollback()
+        return False
+
+
+# ============================================================================
+# AI Model Management
+# ============================================================================
+
+async def list_ai_models(provider_id: int | None = None) -> list:
+    """获取 AI models 列表，可选按 provider_id 筛选。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    if provider_id:
+        cursor = await db.execute("""
+            SELECT id, provider_id, key, name, category, enabled, is_default, created_at, updated_at
+            FROM ai_models WHERE provider_id = ? ORDER BY id
+        """, (provider_id,))
+    else:
+        cursor = await db.execute("""
+            SELECT id, provider_id, key, name, category, enabled, is_default, created_at, updated_at
+            FROM ai_models ORDER BY id
+        """)
+    
+    rows = await cursor.fetchall()
+    
+    models = []
+    for row in rows:
+        models.append({
+            "id": row[0],
+            "provider_id": row[1],
+            "key": row[2],
+            "name": row[3] or "",
+            "category": row[4] or "chat",
+            "enabled": bool(row[5]),
+            "is_default": bool(row[6]),
+            "created_at": row[7] or "",
+            "updated_at": row[8] or "",
+        })
+    return models
+
+
+async def get_ai_model(model_id: int) -> dict | None:
+    """获取单个 AI model 详情。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    cursor = await db.execute("""
+        SELECT id, provider_id, key, name, category, enabled, is_default, created_at, updated_at
+        FROM ai_models WHERE id = ?
+    """, (model_id,))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return None
+    
+    return {
+        "id": row[0],
+        "provider_id": row[1],
+        "key": row[2],
+        "name": row[3] or "",
+        "category": row[4] or "chat",
+        "enabled": bool(row[5]),
+        "is_default": bool(row[6]),
+        "created_at": row[7] or "",
+        "updated_at": row[8] or "",
+    }
+
+
+async def create_ai_model(data: dict) -> dict | str:
+    """创建新的 AI model。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    provider_id = data.get("provider_id")
+    key = data.get("key", "")
+    name = data.get("name", "")
+    category = data.get("category", "chat")
+    enabled = data.get("enabled", True)
+    is_default = data.get("is_default", False)
+    
+    if not provider_id or not key:
+        return None
+    
+    # 验证 provider 存在
+    cursor = await db.execute("SELECT id FROM ai_providers WHERE id = ?", (provider_id,))
+    if not await cursor.fetchone():
+        return "provider_not_found"
+    
+    now = datetime.now().isoformat()
+    
+    try:
+        cursor = await db.execute("""
+            INSERT INTO ai_models (provider_id, key, name, category, enabled, is_default, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (provider_id, key, name, category, enabled, is_default, now, now))
+        await db.commit()
+        
+        return await get_ai_model(cursor.lastrowid)
+    except Exception as e:
+        if "UNIQUE constraint failed" in str(e):
+            return "conflict"
+        logger.error(f"[ADMIN] Failed to create AI model: {e}")
+        await db.rollback()
+        return None
+
+
+async def update_ai_model(model_id: int, data: dict) -> dict | str | None:
+    """更新 AI model 配置。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    existing = await get_ai_model(model_id)
+    if not existing:
+        return None
+    
+    provider_id = data.get("provider_id", existing["provider_id"])
+    key = data.get("key", existing["key"])
+    name = data.get("name", existing["name"])
+    category = data.get("category", existing["category"])
+    enabled = data.get("enabled", existing["enabled"])
+    is_default = data.get("is_default", existing["is_default"])
+    
+    now = datetime.now().isoformat()
+    
+    # 验证 provider 存在
+    cursor = await db.execute("SELECT id FROM ai_providers WHERE id = ?", (provider_id,))
+    if not await cursor.fetchone():
+        return "provider_not_found"
+    
+    try:
+        await db.execute("""
+            UPDATE ai_models SET provider_id = ?, key = ?, name = ?, category = ?, enabled = ?, is_default = ?, updated_at = ?
+            WHERE id = ?
+        """, (provider_id, key, name, category, enabled, is_default, now, model_id))
+        await db.commit()
+        
+        return await get_ai_model(model_id)
+    except Exception as e:
+        if "UNIQUE constraint failed" in str(e):
+            return "conflict"
+        logger.error(f"[ADMIN] Failed to update AI model {model_id}: {e}")
+        await db.rollback()
+        return None
+
+
+async def delete_ai_model(model_id: int) -> bool:
+    """删除 AI model。"""
+    db = await get_main_db()
+    await _ensure_ai_tables(db)
+    
+    try:
+        cursor = await db.execute("DELETE FROM ai_models WHERE id = ?", (model_id,))
+        await db.commit()
+        return cursor.rowcount > 0
+    except Exception as e:
+        logger.error(f"[ADMIN] Failed to delete AI model {model_id}: {e}")
+        await db.rollback()
+        return False
+
+
+# ============================================================================
+# Email Verification Functions
+# ============================================================================
+
+async def store_email_verification_code(email: str, purpose: str = "register") -> str:
+    """生成并存储邮箱验证码，返回生成的 code（用于 debug）。
+    
+    表结构由 init_db() 在启动时创建，包含 consumed_at 列。
+    """
+    import random
+    db = await get_main_db()
+    
+    code = str(random.randint(100000, 999999))
+    now = datetime.now()
+    expires_at = (now + timedelta(minutes=10)).isoformat()
+    
+    await db.execute("""
+        INSERT INTO email_verification_codes (email, purpose, code, expires_at, consumed_at, created_at)
+        VALUES (?, ?, ?, ?, '', ?)
+    """, (email.lower(), purpose, code, expires_at, now.isoformat()))
+    await db.commit()
+    
+    return code
+
+
+async def verify_email_code(email: str, purpose: str, code: str) -> bool:
+    """验证邮箱验证码，验证成功后标记为已使用。"""
+    db = await get_main_db()
+    
+    now = datetime.now().isoformat()
+    
+    cursor = await db.execute("""
+        SELECT id, expires_at, consumed_at FROM email_verification_codes
+        WHERE email = ? AND purpose = ? AND code = ?
+        ORDER BY id DESC LIMIT 1
+    """, (email.lower(), purpose, code))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return False
+    
+    if row[2]:  # consumed_at 已有值 = 已使用
+        return False
+    
+    expires_at = row[1]
+    if expires_at and now > expires_at:
+        return False
+    
+    await db.execute("UPDATE email_verification_codes SET consumed_at = ? WHERE id = ?", (now, row[0]))
+    await db.commit()
+    
+    return True
+
+
+async def get_email_verification_code_debug(email: str, purpose: str = "register") -> str | None:
+    """Debug 用：获取最新的未使用验证码（仅用于测试）。"""
+    db = await get_main_db()
+    
+    cursor = await db.execute("""
+        SELECT code FROM email_verification_codes
+        WHERE email = ? AND purpose = ? AND consumed_at = ''
+        ORDER BY id DESC LIMIT 1
+    """, (email.lower(), purpose))
+    row = await cursor.fetchone()
+    
+    return row[0] if row else None
+
+
+async def reset_password_with_email_code(email: str, code: str, new_password: str) -> bool:
+    """使用邮箱验证码重置密码。"""
+    if not await verify_email_code(email, "reset_password", code):
+        return False
+    
+    db = await get_main_db()
+    pw_hash, _ = _hash_password(new_password)
+    now = datetime.now().isoformat()
+    
+    await db.execute("UPDATE users SET password_hash = ?, updated_at = ? WHERE email = ?", (pw_hash, now, email.lower()))
+    await db.commit()
+    
+    return True
+
+
+async def mark_user_email_verified(user_id: int) -> bool:
+    """标记用户邮箱已验证。"""
+    db = await get_main_db()
+    now = datetime.now().isoformat()
+    
+    cursor = await db.execute("UPDATE users SET email_verified_at = ?, updated_at = ? WHERE id = ?", (now, now, user_id))
+    await db.commit()
+    
+    return cursor.rowcount > 0
+
+
+async def get_user_by_email(email: str) -> dict | None:
+    """通过邮箱获取用户。"""
+    db = await get_main_db()
+    cursor = await db.execute("""
+        SELECT id, username, email, phone, role, status, created_at, email_verified_at
+        FROM users WHERE email = ? LIMIT 1
+    """, (email.lower(),))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return None
+    
+    return {
+        "id": row[0],
+        "username": row[1],
+        "email": row[2] or "",
+        "phone": row[3] or "",
+        "role": row[4] or "user",
+        "status": row[5] or "active",
+        "created_at": row[6],
+        "email_verified": bool(row[7]),
+    }
+
+
+# ============================================================================
+# User Profile Functions
+# ============================================================================
+
+async def get_user_profile_data(user_id: int) -> dict | None:
+    """获取用户资料数据（用于前端展示）。"""
+    db = await get_main_db()
+    
+    cursor = await db.execute("""
+        SELECT id, username, email, phone, role, status, created_at, email_verified_at, updated_at
+        FROM users WHERE id = ?
+    """, (user_id,))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return None
+    
+    return {
+        "user_id": row[0],
+        "username": row[1],
+        "email": row[2] or "",
+        "phone": row[3] or "",
+        "role": row[4] or "user",
+        "status": row[5] or "active",
+        "created_at": row[6] or "",
+        "email_verified": bool(row[7]),
+        "updated_at": row[8] or "",
+    }
+
+
+async def update_user_profile(user_id: int, username: str = None, email: str = None, phone: str = None) -> dict | str | None:
+    """更新用户资料（username, email, phone）。"""
+    db = await get_main_db()
+    
+    now = datetime.now().isoformat()
+    
+    try:
+        # 检查 username 是否冲突
+        if username:
+            cursor = await db.execute("SELECT id FROM users WHERE username = ? AND id != ?", (username, user_id))
+            if await cursor.fetchone():
+                return "username_conflict"
+        
+        # 检查 email 是否冲突
+        if email:
+            cursor = await db.execute("SELECT id FROM users WHERE email = ? AND id != ?", (email.lower(), user_id))
+            if await cursor.fetchone():
+                return "email_conflict"
+        
+        # 检查 phone 是否冲突
+        if phone:
+            cursor = await db.execute("SELECT id FROM users WHERE phone = ? AND id != ?", (phone, user_id))
+            if await cursor.fetchone():
+                return "phone_conflict"
+        
+        # 更新
+        await db.execute("""
+            UPDATE users SET
+                username = COALESCE(?, username),
+                email = COALESCE(?, email),
+                phone = COALESCE(?, phone),
+                updated_at = ?
+            WHERE id = ?
+        """, (username, email, phone, now, user_id))
+        await db.commit()
+        
+        return await get_user_profile_data(user_id)
+    except Exception as e:
+        logger.error(f"[USER_PROFILE] Failed to update profile for user {user_id}: {e}")
+        await db.rollback()
+        return None
+
+
+async def change_user_password(user_id: int, old_password: str, new_password: str) -> str | bool:
+    """修改用户密码（需验证旧密码）。返回 True 表示成功，字符串表示错误类型。"""
+    db = await get_main_db()
+    
+    # 获取当前用户
+    cursor = await db.execute("SELECT username, password_hash FROM users WHERE id = ?", (user_id,))
+    row = await cursor.fetchone()
+    
+    if not row:
+        return "user_not_found"
+    
+    username = row[0]
+    stored_hash = row[1]
+    
+    # 验证旧密码
+    from .auth import authenticate_user
+    user = await authenticate_user(username, old_password)
+    if not user:
+        return "invalid_old_password"
+    
+    # 更新密码
+    pw_hash, _ = _hash_password(new_password)
+    now = datetime.now().isoformat()
+    
+    await db.execute("UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?", (pw_hash, now, user_id))
+    await db.commit()
+    
+    return True

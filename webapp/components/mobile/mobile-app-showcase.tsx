@@ -650,7 +650,7 @@ function DevicePhone({ locale }: { locale: Locale }) {
     <div className="space-y-4">
       <div className="flex items-start justify-between px-2 pt-1">
         <div>
-          <p className="font-serif text-[30px] font-semibold text-[#1A1A1A]">{locale === "en" ? "Study Ink" : "书房墨鱼"}</p>
+          <p className="font-serif text-[30px] font-semibold text-[#1A1A1A]">{locale === "en" ? "Study Ink" : "书房薯条"}</p>
           <p className="mt-1 text-sm text-[#8E8E93]">{locale === "en" ? "Device dashboard and BLE setup" : "设备仪表盘与 BLE 配网"}</p>
         </div>
         <span className="pt-2 text-sm text-[#007AFF]">{locale === "en" ? "Back" : "返回"}</span>

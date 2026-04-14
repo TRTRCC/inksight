@@ -15,10 +15,10 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="flex h-7 w-7 items-center justify-center rounded-sm border border-ink bg-ink text-white text-xs font-bold font-serif">
-                {locale === "en" ? "I" : "墨"}
+                {locale === "en" ? "薯" : "薯"}
               </div>
               <span className="text-base font-semibold text-ink tracking-tight">
-                {locale === "en" ? "Fries" : "墨鱼Fries"}
+                {locale === "en" ? "Fries" : "薯条Fries"}
               </span>
             </div>
             <p className="text-sm text-ink-light leading-relaxed">
@@ -77,7 +77,7 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-ink-light">
-            &copy; {new Date().getFullYear()} {locale === "en" ? "Fries" : "墨鱼Fries"}. Released under the MIT License.
+            &copy; {new Date().getFullYear()} {locale === "en" ? "Fries" : "薯条Fries"}. Released under the MIT License.
           </p>
           <p className="text-xs text-ink-light">
             {t(locale, "footer.tagline")}

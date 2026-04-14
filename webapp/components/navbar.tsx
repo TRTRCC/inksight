@@ -86,7 +86,7 @@ export function Navbar() {
             className="rounded-sm object-contain"
           />
           <span className="text-lg font-semibold text-ink tracking-tight">
-            {locale === "en" ? "Fries" : "墨鱼"}
+            {locale === "en" ? "Fries" : "薯条"}
           </span>
         </Link>
 
